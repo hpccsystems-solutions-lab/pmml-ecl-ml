@@ -6,14 +6,20 @@ import com.hpccsystems.pmml2ecl.Node;
 
 public class ParserTester {
     
+    static String currDir = System.getProperty("user.dir");
+
     public static void main(String[] args) throws Exception {
-        // System.out.println(new PMMLParser("<Root bruh=\"uim\"><Node>45</Node><Node>67</Node></Root>", true).getRoot().toString());
-        System.out.println(System.getProperty("user.dir"));
-        PMMLElement elem = (PMMLElement) new PMMLParser(System.getProperty("user.dir") + "/src/test/resources/LinearRegression.xml").getRoot();
-        // System.out.println(elem.toString());
-        for (Node n : elem.childNodes.get(2).childNodes.get(0).childNodes) {
-            System.out.println(n.attributes.get("name"));
-        }
+        testPMML();
+    }
+
+    static void testPMML() throws Exception {
+        PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/NeuralNetwork.xml").getRoot();
+        // System.out.println(elem.firstNodeWithAttribute("name", "Gender").toString());
+        // System.out.println(elem.allNodesMatchingAttribute("dataType", "integer"));
+    }
+
+    static void testECL() {
+
     }
 
 }

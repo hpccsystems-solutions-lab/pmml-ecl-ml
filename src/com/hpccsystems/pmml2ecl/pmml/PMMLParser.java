@@ -26,11 +26,11 @@ public class PMMLParser {
             fileContents += in.nextLine();
         }
         in.close();
-        rootNode = new PMMLElement(null, null, fileContents).childNodes.get(0);
+        rootNode = new PMMLElement(null, null, fileContents, false).childNodes.get(0);
     }
 
     public PMMLParser(String fileContents, boolean differentiator) {
-        rootNode = new PMMLElement(null, null, fileContents).childNodes.get(0);
+        rootNode = new PMMLElement(null, null, fileContents, false).childNodes.get(0);
     }
 
     public Node getRoot() {
