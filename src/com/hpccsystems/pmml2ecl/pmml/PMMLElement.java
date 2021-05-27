@@ -68,6 +68,12 @@ public class PMMLElement extends Node {
         this.content = cont.trim();
     }
 
+    /**
+     * Function that finds the first PMMLElement given a specific attribute pair
+     * @param key The key of the attribute to look for
+     * @param value Exact match of attribute value to search for
+     * @return The first PMMLElement (and child nodes) that matches the criteria
+     */
     public PMMLElement firstNodeWithAttribute(String key, String value) {
         if (this.attributes.containsKey(key) && this.attributes.get(key).equals(value)) {
             return this;
@@ -82,6 +88,11 @@ public class PMMLElement extends Node {
         return null;
     }
 
+    /**
+     * Gets the first PMMLElement given a specific attribute key
+     * @param key They key of the attribute to look for
+     * @return the first PMMLElement (containing children nodes) 
+     */
     public PMMLElement firstNodeWithKey(String key) {
         if (this.attributes.containsKey(key)) {
             return this;
@@ -96,6 +107,12 @@ public class PMMLElement extends Node {
         return null;
     }
 
+    /**
+     * Gets all PMMLElements with a specific attribute pair.
+     * @param key attribute key to search for
+     * @param value attribute value to search for
+     * @return List of PMMLElements (containing children nodes)
+     */
     public List<PMMLElement> allNodesMatchingAttribute(String key, String value) {
         List<PMMLElement> allNodes = new ArrayList<>();
         if (this.attributes.containsKey(key) && this.attributes.get(key).equals(value)) {
@@ -108,6 +125,9 @@ public class PMMLElement extends Node {
         return allNodes;
     }
 
+    /**
+     * Overriden toString() that gets full layout of PMMLElement recursively.
+     */
     @Override
     public String toString() {
         if (this.selfClosing) {
