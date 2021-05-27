@@ -9,6 +9,7 @@ public class PMMLElement extends Node {
     public PMMLElement(String nodeType, String rawAttributes, String content) {
         super(nodeType, rawAttributes, content);
         splitContent();
+        splitAttributes();
     }
 
     public void appendContent(String s) {
@@ -21,7 +22,18 @@ public class PMMLElement extends Node {
 
     private void splitAttributes() {
         String attr = this.getRawAttributes();
-        //TODO: Do some splitting/mapping
+        int index = 0;
+        while (index >= 0 && index < attr.length()) {
+            if (attr.indexOf('=', index) < 0) {
+                break;
+            }
+            String key = attr.substring(index, attr.indexOf('=', index));
+            int valStart = attr.indexOf('"', index);
+            int valEnd = attr.indexOf('"', valStart + 1);
+            String value = attr.substring(valStart + 1, valEnd);
+            this.attributes.put(key, value);
+            attr = attr.substring(valEnd+1).trim();
+        }
 
     }
 
