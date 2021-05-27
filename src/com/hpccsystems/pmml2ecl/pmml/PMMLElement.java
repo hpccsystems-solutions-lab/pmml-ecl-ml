@@ -82,6 +82,20 @@ public class PMMLElement extends Node {
         return null;
     }
 
+    public PMMLElement firstNodeWithKey(String key) {
+        if (this.attributes.containsKey(key)) {
+            return this;
+        } else {
+            for (int i = 0; i < this.childNodes.size(); i++) {
+                PMMLElement search = ((PMMLElement) this.childNodes.get(i)).firstNodeWithKey(key);
+                if (search != null) {
+                    return search;
+                }
+            }
+        }
+        return null;
+    }
+
     public List<PMMLElement> allNodesMatchingAttribute(String key, String value) {
         List<PMMLElement> allNodes = new ArrayList<>();
         if (this.attributes.containsKey(key) && this.attributes.get(key).equals(value)) {

@@ -13,7 +13,8 @@ public class ParserTester {
     }
 
     static void testPMML() throws Exception {
-        PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/NeuralNetwork.xml").getRoot();
+        PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/LinearRegression.xml").getRoot(); 
+        System.out.println(elem.firstNodeWithKey("functionName").toString());
         // System.out.println(elem.firstNodeWithAttribute("name", "Gender").toString());
         // System.out.println(elem.allNodesMatchingAttribute("dataType", "integer"));
     }

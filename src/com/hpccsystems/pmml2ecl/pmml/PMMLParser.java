@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class PMMLParser {
 
-    private Node rootNode;
+    private PMMLElement rootNode;
 
     public PMMLParser(BufferedInputStream buffer) {
 
@@ -26,14 +26,14 @@ public class PMMLParser {
             fileContents += in.nextLine();
         }
         in.close();
-        rootNode = new PMMLElement(null, null, fileContents, false).childNodes.get(0);
+        rootNode = (PMMLElement) new PMMLElement(null, null, fileContents, false).childNodes.get(0);
     }
 
     public PMMLParser(String fileContents, boolean differentiator) {
-        rootNode = new PMMLElement(null, null, fileContents, false).childNodes.get(0);
+        rootNode = (PMMLElement) new PMMLElement(null, null, fileContents, false).childNodes.get(0);
     }
 
-    public Node getRoot() {
+    public PMMLElement getRoot() {
         return rootNode;
     }
 
