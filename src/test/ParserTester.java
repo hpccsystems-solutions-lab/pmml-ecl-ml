@@ -15,11 +15,12 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-        testECL();
+        testPMML();
     }
 
     static void testPMML() throws Exception {
-        PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/LinearRegression.xml").getRoot(); 
+        PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/ExampleECLResult.xml").getRoot(); 
+        System.out.println(elem.firstNodeWithTag("Dataset").toString());
         // System.out.println(elem.firstNodeWithKey("functionName").toString());
         // System.out.println(elem.firstNodeWithAttribute("name", "Gender").toString());
         // System.out.println(elem.allNodesMatchingAttribute("dataType", "integer"));

@@ -33,8 +33,8 @@ public class PMMLElement extends Node {
                 break;
             }
             String key = attr.substring(index, attr.indexOf('=', index));
-            int valStart = attr.indexOf('"', index);
-            int valEnd = attr.indexOf('"', valStart + 1);
+            int valStart = attr.indexOf('"', index) >= 0 ? attr.indexOf('"', index) : attr.indexOf('\'', index);
+            int valEnd = attr.indexOf('"', valStart + 1) >= 0 ? attr.indexOf('"', valStart + 1) : attr.indexOf('\'', valStart + 1);
             String value = attr.substring(valStart + 1, valEnd);
             this.attributes.put(key, value);
             attr = attr.substring(valEnd+1).trim();
@@ -43,7 +43,7 @@ public class PMMLElement extends Node {
     }
 
     private void splitContent() {
-        String cont = this.getContent();
+        String cont = this.getContent().trim();
         int index = cont.indexOf('<', 0);
         while (index >= 0 && index < cont.length()) {
             int endFirstTag = cont.indexOf('>', index);
@@ -54,13 +54,13 @@ public class PMMLElement extends Node {
                     cont.substring(index+1, endFirstTag - 1).replaceFirst(tag, "").trim(), 
                     "", true);
                 this.childNodes.add(innerElem);
-                cont = cont.substring(endFirstTag + 1);
+                cont = cont.substring(endFirstTag + 1).trim();
             } else {
                 String endingTag = "</" + tag + ">";
                 int endingTagIndex = cont.indexOf(endingTag, endFirstTag);
                 PMMLElement innerElem = new PMMLElement(tag, 
                     cont.substring(index+1, endFirstTag).replaceFirst(tag, "").trim(), 
-                    cont.substring(endFirstTag + 1, endingTagIndex), false);
+                    cont.substring(endFirstTag + 1, endingTagIndex).trim(), false);
                 this.childNodes.add(innerElem);
                 cont = cont.substring(endingTagIndex + endingTag.length());
             }
@@ -99,6 +99,25 @@ public class PMMLElement extends Node {
         } else {
             for (int i = 0; i < this.childNodes.size(); i++) {
                 PMMLElement search = ((PMMLElement) this.childNodes.get(i)).firstNodeWithKey(key);
+                if (search != null) {
+                    return search;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets the first PMMLElement with a given tag. Not case sensitive.
+     * @param name The name of the tag
+     * @return the first PMMLElement with given tag (including children nodes)
+     */
+    public PMMLElement firstNodeWithTag(String name) {
+        if (this.nodeType.toLowerCase().equals(name.toLowerCase())) {
+            return this;
+        } else {
+            for (int i = 0; i < this.childNodes.size(); i++) {
+                PMMLElement search = ((PMMLElement) this.childNodes.get(i)).firstNodeWithTag(name);
                 if (search != null) {
                     return search;
                 }

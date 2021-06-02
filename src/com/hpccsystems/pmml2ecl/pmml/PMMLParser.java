@@ -29,7 +29,7 @@ public class PMMLParser {
         Scanner in = new Scanner(file);
         String fileContents = "";
         while(in.hasNextLine()) {
-            fileContents += in.nextLine();
+            fileContents += in.nextLine().trim();
         }
         in.close();
         rootNode = new PMMLElement(null, null, fileContents, false);
