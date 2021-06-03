@@ -9,13 +9,14 @@ import java.util.List;
 import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
+import com.hpccsystems.pmml2ecl.ecl.XMLMLConverter;
 
 public class ParserTester {
     
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-        testPMML();
+        testXMLtoPMML();
     }
 
     static void testPMML() throws Exception {
@@ -32,6 +33,12 @@ public class ParserTester {
         while (!allElems.isEmpty()) {
             System.out.println(allElems.pop().toString());
         }
+    }
+
+    static void testXMLtoPMML() throws Exception {
+        PMMLElement eclXML = (PMMLElement) new PMMLParser(currDir + "/src/test/ECLDir/Return.xml").getRoot();
+        XMLMLConverter test = new XMLMLConverter(eclXML);
+        System.out.println(test.toLinearRegression().toString());
     }
 
 }

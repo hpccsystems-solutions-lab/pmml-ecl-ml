@@ -22,6 +22,10 @@ public class Node {
         childNodes.add(node);
     };
 
+    public void addChildren(List<Node> nodes) {
+        childNodes.addAll(nodes);
+    }
+
     public String getType() {
         return this.nodeType;
     }
@@ -32,6 +36,10 @@ public class Node {
 
     public String getRawAttributes() {
         return this.rawAttributes;
+    }
+
+    public void setRawAttributes(String raw) {
+        this.rawAttributes = raw;
     }
     
 }

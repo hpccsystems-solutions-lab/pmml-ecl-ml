@@ -3,6 +3,7 @@ package com.hpccsystems.pmml2ecl.pmml;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.hpccsystems.pmml2ecl.Node;
 
@@ -17,12 +18,28 @@ public class PMMLElement extends Node {
         splitAttributes();
     }
 
+    public PMMLElement(String nodeType, Map<String, String> attributes, List<Node> childNodes, boolean selfClosing) {
+        super(nodeType, "", "");
+        this.attributes = attributes;
+        this.childNodes = childNodes;
+        this.selfClosing = selfClosing;
+        joinMapAttributes();
+    }
+
     public void appendContent(String s) {
         this.content += s;
     }
 
     public void appendContent(byte s) {
         this.content += s;
+    }
+
+    private void joinMapAttributes() {
+        String rawAttribs = "";
+        for (String key : this.attributes.keySet()) {
+            rawAttribs += key + "=\"" + this.attributes.get(key) + "\" ";
+        }
+        this.setRawAttributes(rawAttribs.trim());
     }
 
     private void splitAttributes() {

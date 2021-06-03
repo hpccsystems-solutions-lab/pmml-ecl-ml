@@ -25,4 +25,4 @@ ML_Core.ToField(xPoints, xPointsNF);
 ML_Core.ToField(yPoints, yPointsNF);
 
 linRegress := LR.OLS(xPointsNF, yPointsNF);
-OUTPUT(linRegress);
+OUTPUT(linRegress.GetModel);

@@ -8,8 +8,6 @@ function Usage() {
 
 }
 
- 
-
 function FullDirPath() {
 
     echo "$(cd "$(dirname "$1")"; pwd -P)"
@@ -51,5 +49,5 @@ XML_RESULTS=$(ecl run thor "${REAL_TEMP_PATH}" -s=play.hpccsystems.com -u=aparra
 if [ -f "${RETURN_PATH}" ]; then
     rm "${RETURN_PATH}"
 fi
-echo "$XMLRESULTS" >> ${RETURN_PATH}
+echo "${XML_RESULTS}" >> ${RETURN_PATH}
 echo "hello"
