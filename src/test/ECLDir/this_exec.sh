@@ -38,15 +38,18 @@ TOP_DIR=$(FullDirPath $(dirname "${SCRIPT_DIR}/../"))
 TMP_PATH="${SCRIPT_DIR}/tmp_exec.ecl"
 
 REAL_TEMP_PATH=$(FullFilePath "${TMP_PATH}")
+RETURN_PATH=$(FullFilePath "$SCRIPT_DIR/Return.xml")
 
 ####  Create the ECL at ${REAL_TEMP_PATH} and make sure it has a .ecl extension #####
 
 # Execute the temporary ECL, capturing results
 
 cd "${TOP_DIR}"
-XML_RESULTS=$(${ECL_CMD} run thor "${REAL_TEMP_PATH}" -s=play.hpccsystems.com -u=aparra -pw=\"\" --wait=86400000 $@ -f--nostdinc -I"${TOP_DIR}" -f--nologfile)
+XML_RESULTS=$(ecl run thor "${REAL_TEMP_PATH}" -s=play.hpccsystems.com -u=aparra -pw=\"\")
 
-# Remove the temporary ECL file
 
-# rm "${REAL_TEMP_PATH}"
-echo ${XMLRESULTS}
+if [ -f "${RETURN_PATH}" ]; then
+    rm "${RETURN_PATH}"
+fi
+echo "$XMLRESULTS" >> ${RETURN_PATH}
+echo "hello"
