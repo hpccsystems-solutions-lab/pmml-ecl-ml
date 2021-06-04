@@ -1,5 +1,8 @@
 package com.hpccsystems.pmml2ecl.pmml;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -174,6 +177,17 @@ public class PMMLElement extends Node {
             build += ("\n" + this.childNodes.get(i).toString()).replace("\n", "\n   ");
         }
         return build + (content.length() > 0 ? "\n" + content : "") + "\n</" + this.nodeType + ">";
+    }
+
+    public void writeToFile() throws Exception {
+        File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput.xml");
+        if (!file.exists()) {
+           file.createNewFile();
+        } 
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(this.toString());
+        bw.close();
     }
 
 }

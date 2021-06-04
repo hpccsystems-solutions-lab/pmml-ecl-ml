@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.hpccsystems.pmml2ecl.Node;
+import com.hpccsystems.pmml2ecl.ecl.ECLCompiler;
 import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
 import com.hpccsystems.pmml2ecl.ecl.XMLMLConverter;
@@ -16,7 +17,7 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-        testXMLtoPMML();
+        testCompiler();
     }
 
     static void testPMML() throws Exception {
@@ -39,6 +40,14 @@ public class ParserTester {
         PMMLElement eclXML = (PMMLElement) new PMMLParser(currDir + "/src/test/ECLDir/Return.xml").getRoot();
         XMLMLConverter test = new XMLMLConverter(eclXML);
         System.out.println(test.toLinearRegression().toString());
+    }
+
+    static void testLinearRegressionManual() throws Exception {
+        ECLParser parser = new ECLParser(currDir + "/src/test/ECLDir/Return.xml");
+    }
+
+    static void testCompiler() throws Exception {
+        ECLCompiler compiler = new ECLCompiler(currDir + "/src/test/LinearRegressionTest.ecl");
     }
 
 }

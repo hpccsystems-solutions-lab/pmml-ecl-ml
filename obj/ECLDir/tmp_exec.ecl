@@ -26,5 +26,3 @@ ML_Core.ToField(yPoints, yPointsNF);
 
 linRegress := LR.OLS(xPointsNF, yPointsNF);
 OUTPUT(linRegress.GetModel);
-OUTPUT('Hello World');
-
