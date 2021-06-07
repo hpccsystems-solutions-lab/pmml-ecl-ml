@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.hpccsystems.pmml2ecl.Node;
-import com.hpccsystems.pmml2ecl.pmml.PMMLConverter;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 public class XMLMLConverter {

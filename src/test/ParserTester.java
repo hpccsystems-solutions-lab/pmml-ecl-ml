@@ -4,9 +4,7 @@ import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 import com.hpccsystems.pmml2ecl.pmml.PMMLParser;
 
 import java.util.LinkedList;
-import java.util.List;
 
-import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.ecl.ECLCompiler;
 import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
@@ -23,9 +21,6 @@ public class ParserTester {
     static void testPMML() throws Exception {
         PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/ExampleECLResult.xml").getRoot(); 
         System.out.println(elem.firstNodeWithTag("Dataset").toString());
-        // System.out.println(elem.firstNodeWithKey("functionName").toString());
-        // System.out.println(elem.firstNodeWithAttribute("name", "Gender").toString());
-        // System.out.println(elem.allNodesMatchingAttribute("dataType", "integer"));
     }
 
     static void testECL() {

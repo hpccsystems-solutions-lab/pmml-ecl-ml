@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -188,6 +187,30 @@ public class PMMLElement extends Node {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(this.toString());
         bw.close();
+    }
+
+    /**
+     * Overriden method that doesn't allow for self closing tags to have children
+     */
+    @Override
+    public void addChild(Node node) {
+        if (!selfClosing) {
+            super.addChild(node);
+        } else {
+            return;
+        }
+    }
+
+    /**
+     * Overriden method that doesn't allow for self closing tags to have children
+     */
+    @Override
+    public void addChildren(List<Node> nodes) {
+        if (!selfClosing) {
+            super.addChildren(nodes);
+        } else {
+            return;
+        }
     }
 
 }

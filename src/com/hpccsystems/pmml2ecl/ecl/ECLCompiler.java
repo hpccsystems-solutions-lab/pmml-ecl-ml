@@ -1,13 +1,11 @@
 package com.hpccsystems.pmml2ecl.ecl;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ECLCompiler {
     
@@ -32,9 +30,16 @@ public class ECLCompiler {
             os.close();
         }
 
-        String[] cmd1 = { "cd", "./obj/ECLDir"};
-        String[] cmd2 = { "sh", "this_exec.sh"};
+        String[] cmd1 = { "cd", currDir + "/obj/ECLDir"};
+        String[] cmd2 = { "sh", "./this_exec.sh"};
         Runtime.getRuntime().exec(cmd1);
-        Runtime.getRuntime().exec(cmd2);
+        Process p = Runtime.getRuntime().exec(cmd2);
+        p.waitFor();
+        BufferedReader reader=new BufferedReader(new InputStreamReader(
+            p.getInputStream())); 
+        String line; 
+        while((line = reader.readLine()) != null) { 
+            System.out.println(line);
+   }
     }
 }

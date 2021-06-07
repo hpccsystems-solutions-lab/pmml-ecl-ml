@@ -1,18 +1,12 @@
 package com.hpccsystems.pmml2ecl.pmml;
 
 import java.io.*;
-import com.hpccsystems.pmml2ecl.Node;
-
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class PMMLParser {
 
     private PMMLElement rootNode;
-
-    public PMMLParser(BufferedInputStream buffer) {
-
-    }
 
     /**
      * Creates an instance of a PMMLElement given a file path. Will throw errors for non .xml or .pmml files or
@@ -33,11 +27,10 @@ public class PMMLParser {
         }
         in.close();
         rootNode = new PMMLElement(null, null, fileContents, false);
-        if (rootNode.childNodes.size() == 1) {
-            rootNode = (PMMLElement) rootNode.childNodes.get(0);
-        } else {
+        if (rootNode.childNodes.size() != 1) {
             throw new Exception("More than one root element.");
-        }
+        } 
+        rootNode = (PMMLElement) rootNode.childNodes.get(0);
     }
 
     public PMMLParser(String fileContents, boolean differentiator) {
