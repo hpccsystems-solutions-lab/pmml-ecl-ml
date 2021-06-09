@@ -1,5 +1,6 @@
 package test;
 
+import com.hpccsystems.pmml2ecl.pmml.PMMLConverter;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 import com.hpccsystems.pmml2ecl.pmml.PMMLParser;
 
@@ -15,10 +16,10 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-        testCompiler();
+        testPMMLConverter();
     }
 
-    static void testPMML() throws Exception {
+    static void testPMMLParser() throws Exception {
         PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/ExampleECLResult.xml").getRoot(); 
         System.out.println(elem.firstNodeWithTag("Dataset").toString());
     }
@@ -43,6 +44,11 @@ public class ParserTester {
 
     static void testCompiler() throws Exception {
         ECLCompiler compiler = new ECLCompiler(currDir + "/src/main/java/test/LinearRegressionTest.ecl");
+    }
+
+    static void testPMMLConverter() throws Exception{
+        PMMLConverter converter = new PMMLConverter(new PMMLParser(currDir + "/output/PMMLOutput.xml").getRoot());
+        ECLParser.writeToFile(converter.getECL());
     }
 
 }
