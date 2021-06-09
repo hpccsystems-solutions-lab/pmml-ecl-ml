@@ -163,6 +163,10 @@ public class PMMLElement extends Node {
         return allNodes;
     }
 
+    public String getValue(String key) {
+        return attributes.get(key);
+    }
+
     /**
      * Overriden toString() that gets full layout of PMMLElement recursively.
      */
@@ -180,6 +184,7 @@ public class PMMLElement extends Node {
 
     public void writeToFile() throws Exception {
         File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput.xml");
+        //TODO: check for folder
         if (!file.exists()) {
            file.createNewFile();
         } 

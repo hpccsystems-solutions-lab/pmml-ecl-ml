@@ -32,17 +32,17 @@ public class ParserTester {
     }
 
     static void testXMLtoPMML() throws Exception {
-        PMMLElement eclXML = (PMMLElement) new PMMLParser(currDir + "/src/test/ECLDir/Return.xml").getRoot();
+        PMMLElement eclXML = new PMMLParser(currDir + "/src/test/ECLDir/Return.xml").getRoot();
         XMLMLConverter test = new XMLMLConverter(eclXML);
         System.out.println(test.toLinearRegression().toString());
     }
 
     static void testLinearRegressionManual() throws Exception {
-        ECLParser parser = new ECLParser(currDir + "/src/test/ECLDir/Return.xml");
+        ECLParser parser = new ECLParser(currDir + "/src/main/java/test/ECLDir/Return.xml");
     }
 
     static void testCompiler() throws Exception {
-        ECLCompiler compiler = new ECLCompiler(currDir + "/src/test/LinearRegressionTest.ecl");
+        ECLCompiler compiler = new ECLCompiler(currDir + "/src/main/java/test/LinearRegressionTest.ecl");
     }
 
 }

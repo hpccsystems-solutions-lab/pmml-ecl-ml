@@ -1,45 +1,43 @@
 package com.hpccsystems.pmml2ecl.ecl;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import org.hpccsystems.ws.client.HPCCWsClient;
+import org.hpccsystems.ws.client.HPCCWsWorkUnitsClient;
+import org.hpccsystems.ws.client.gen.axis2.wsworkunits.v1_81.ECLSourceFile;
+import org.hpccsystems.ws.client.gen.axis2.wsworkunits.v1_81.WURunResponse;
+import org.hpccsystems.ws.client.platform.Platform;
+import org.hpccsystems.ws.client.platform.Workunit;
+import org.hpccsystems.ws.client.wrappers.wsworkunits.WorkunitWrapper;
+
+import java.io.File;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class ECLCompiler {
     
     static String currDir = System.getProperty("user.dir");
 
     public ECLCompiler(String eclFilePath) throws Exception {
-        InputStream is = null;
-        OutputStream os = null;
-        try {
-            is = new FileInputStream(eclFilePath);
-            os = new FileOutputStream(currDir + "/obj/ECLDir/tmp_exec.ecl");
+        Platform platform = Platform.get("http", "play.hpccsystems.com", 8010, "aparra", "");
+        HPCCWsWorkUnitsClient connector = platform.getWsClient().getWsWorkunitsClient();
+        WorkunitWrapper wu = new WorkunitWrapper();
+        wu.setECL(getECL(eclFilePath));
+        wu.setCluster("thor");
+        WURunResponse results = connector.createAndRunWUFromECL(wu);
+        System.out.println(results.getResults());
+    }
 
-            // buffer size 1K
-            byte[] buf = new byte[1024];
-
-            int bytesRead;
-            while ((bytesRead = is.read(buf)) > 0) {
-                os.write(buf, 0, bytesRead);
-            }
-        } finally {
-            is.close();
-            os.close();
+    private String getECL(String filepath) throws Exception {
+        Pattern acceptableEndings = Pattern.compile("(\\.(ecl))$", Pattern.CASE_INSENSITIVE);
+        if (!acceptableEndings.matcher(filepath).find()) {
+            throw new Exception("File type not accepted.");
         }
-
-        String[] cmd1 = { "cd", currDir + "/obj/ECLDir"};
-        String[] cmd2 = { "sh", "./this_exec.sh"};
-        Runtime.getRuntime().exec(cmd1);
-        Process p = Runtime.getRuntime().exec(cmd2);
-        p.waitFor();
-        BufferedReader reader=new BufferedReader(new InputStreamReader(
-            p.getInputStream())); 
-        String line; 
-        while((line = reader.readLine()) != null) { 
-            System.out.println(line);
-   }
+        File file = new File(filepath);
+        Scanner in = new Scanner(file);
+        String fileContents = "";
+        while(in.hasNextLine()) {
+            fileContents += in.nextLine() + "\n";
+        }
+        in.close();
+        return fileContents;
     }
 }
