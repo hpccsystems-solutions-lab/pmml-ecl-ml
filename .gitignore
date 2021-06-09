@@ -3,3 +3,5 @@
 eclcc.log
 .idea/
 pmml-ecl-ml.iml
+target/
+target/generated-sources/
