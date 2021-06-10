@@ -11,7 +11,6 @@ import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 public class ECLParser {
 
-    private LinkedList<ECLElement> allElems;
     private PMMLElement rootNode;
 
     public ECLParser(String xmlFilePath) throws Exception {
@@ -33,26 +32,14 @@ public class ECLParser {
             throw new Exception("More than one root element.");
         }
         convertToPMML();
-        this.rootNode.writeToFile();
-    }
-    
-    public ECLParser(String fileContents, boolean diff) {
-        allElems = new LinkedList<>();
-        String cont = fileContents;
-        int index = 0;
-        while (index >= 0 && cont.length() > 0) {
-            index = cont.indexOf(';', 0);
-            allElems.add(new ECLElement(cont.substring(0, index).replaceAll("(//).+\n", "").trim()));
-            cont = cont.substring(index + 1);
-        }
-    }
-
-    public LinkedList<ECLElement> getElems() {
-        return allElems;
     }
 
     private void convertToPMML() {
         this.rootNode = new XMLMLConverter(this.rootNode).toLinearRegression();
+    }
+
+    public void writeToOutput() throws Exception {
+        this.rootNode.writeToFile();
     }
 
     public static void writeToFile(LinkedList<ECLElement> eclElements) throws Exception {

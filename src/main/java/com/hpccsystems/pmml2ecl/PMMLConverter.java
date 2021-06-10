@@ -1,4 +1,4 @@
-package com.hpccsystems.pmml2ecl.pmml;
+package com.hpccsystems.pmml2ecl;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -7,6 +7,7 @@ import java.util.List;
 import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
+import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 public class PMMLConverter {
 

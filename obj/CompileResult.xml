@@ -1,0 +1,8 @@
+
+<Result>
+ <Warning><Code>2143</Code><Filename>/Users/alex/Documents/Work/pmml2ecl/pmml-ecl-ml/src/main/java/test/LinearRegressionTest.ecl</Filename><Line>4</Line><Source>eclcc</Source><Message>import hides previously defined identifier</Message></Warning>
+<Dataset name='Result 1'>
+ <Row><wi>1</wi><id>1</id><number>1</number><value>0.9999999999998498</value></Row>
+ <Row><wi>1</wi><id>1</id><number>2</number><value>2.000000000000026</value></Row>
+</Dataset>
+</Result>

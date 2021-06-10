@@ -1,0 +1,9 @@
+{
+  "eclBinary": "ecl",
+  "server": "play.hpccsystems.com",
+  "protocol": "http",
+  "port": 8010,
+  "user": "aparra",
+  "password": "",
+  "jobName": "testRun"
+}

@@ -1,13 +1,11 @@
 package test;
 
-import com.hpccsystems.pmml2ecl.pmml.PMMLConverter;
+import com.hpccsystems.pmml2ecl.ECLConverter;
+import com.hpccsystems.pmml2ecl.PMMLConverter;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 import com.hpccsystems.pmml2ecl.pmml.PMMLParser;
 
-import java.util.LinkedList;
-
 import com.hpccsystems.pmml2ecl.ecl.ECLCompiler;
-import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
 import com.hpccsystems.pmml2ecl.ecl.XMLMLConverter;
 
@@ -16,20 +14,14 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-        testPMMLConverter();
+//        testPMMLConverter();
+//        testCompiler();
+        endToEndECLLinearRegression();
     }
 
     static void testPMMLParser() throws Exception {
-        PMMLElement elem = (PMMLElement) new PMMLParser(currDir + "/src/test/resources/ExampleECLResult.xml").getRoot(); 
+        PMMLElement elem = new PMMLParser(currDir + "/src/test/resources/ExampleECLResult.xml").getRoot();
         System.out.println(elem.firstNodeWithTag("Dataset").toString());
-    }
-
-    static void testECL() {
-        LinkedList<ECLElement> allElems = new ECLParser("r := {STRING1 Letter};\nds1 := DATASET([{'A'},{'B'},{'C'},{'D'},{'E'}],r);\nds2 := DATASET([{'F'},{'G'},{'H'},{'I'},{'J'}],r);" +
-        "ds3 := DATASET([{'K'},{'L'},{'M'},{'N'},{'O'}],r);\nds4 := DATASET([{'P'},{'Q'},{'R'},{'S'},{'T'}],r);\nds5 := DATASET([{'U'},{'V'},{'W'},{'X'},{'Y'}],r);", true).getElems();
-        while (!allElems.isEmpty()) {
-            System.out.println(allElems.pop().toString());
-        }
     }
 
     static void testXMLtoPMML() throws Exception {
@@ -49,6 +41,10 @@ public class ParserTester {
     static void testPMMLConverter() throws Exception{
         PMMLConverter converter = new PMMLConverter(new PMMLParser(currDir + "/output/PMMLOutput.xml").getRoot());
         ECLParser.writeToFile(converter.getECL());
+    }
+
+    static void endToEndECLLinearRegression() throws Exception {
+        new ECLConverter(currDir + "/src/main/java/test/LinearRegressionTest.ecl");
     }
 
 }

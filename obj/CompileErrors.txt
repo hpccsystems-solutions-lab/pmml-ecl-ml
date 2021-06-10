@@ -1,0 +1,6 @@
+/Users/alex/Documents/Work/pmml2ecl/pmml-ecl-ml/src/main/java/test/LinearRegressionTest.ecl(4,8): warning C2143: import hides previously defined identifier
+0 error, 1 warning
+
+eclcc: /Users/alex/Documents/Work/pmml2ecl/pmml-ecl-ml/src/main/java/test/LinearRegressionTest.ecl(4,8): Warning C2143: import hides previously defined identifier
+0 error(s), 1 warning(s)
+
