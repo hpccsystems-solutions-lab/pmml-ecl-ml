@@ -13,8 +13,13 @@ public class ECLParser {
 
     private PMMLElement rootNode;
 
+    /**
+     * Parses the result XML from compiling the .ecl code.
+     * @param xmlFilePath the absolute path of the result xml
+     * @throws Exception
+     */
     public ECLParser(String xmlFilePath) throws Exception {
-        Pattern acceptableEndings = Pattern.compile("(\\.(xml|pmml))$", Pattern.CASE_INSENSITIVE);
+        Pattern acceptableEndings = Pattern.compile("(\\.(xml))$", Pattern.CASE_INSENSITIVE);
         if (!acceptableEndings.matcher(xmlFilePath).find()) {
             throw new Exception("File type not accepted.");
         }
@@ -38,10 +43,19 @@ public class ECLParser {
         this.rootNode = new XMLMLConverter(this.rootNode).toLinearRegression();
     }
 
+    /**
+     * Writes the current parsed result XML to /output/PMMLOutput.xml
+     * @throws Exception
+     */
     public void writeToOutput() throws Exception {
         this.rootNode.writeToFile();
     }
 
+    /**
+     * Writes the elements to /output/ECLOutput.ecl for consumption
+     * @param eclElements List of eclElements to write
+     * @throws Exception
+     */
     public static void writeToFile(LinkedList<ECLElement> eclElements) throws Exception {
         File file = new File(System.getProperty("user.dir") + "/output/ECLOutput.ecl");
         //TODO: check for folder

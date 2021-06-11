@@ -12,7 +12,15 @@ import com.hpccsystems.pmml2ecl.Node;
 public class PMMLElement extends Node {
 
     private boolean selfClosing;
-    
+
+    /**
+     * A constructor for a PMMLElement that parses the attributes and content based on the input
+     * strings.
+     * @param nodeType
+     * @param rawAttributes a string that contains all the attribute key/value pairs.
+     * @param content a string that contains all of the inner text or inner PMML.
+     * @param selfClosing if the element should contain children or not
+     */
     public PMMLElement(String nodeType, String rawAttributes, String content, boolean selfClosing) {
         super(nodeType, rawAttributes, content);
         this.selfClosing = selfClosing;
@@ -20,6 +28,13 @@ public class PMMLElement extends Node {
         splitAttributes();
     }
 
+    /**
+     * A constructor for a PMMLElement that takes in the final variable pointers rather than constructing them.
+     * @param nodeType
+     * @param attributes the key/value attribute pairs in a Map.
+     * @param childNodes the children nodes in a List.
+     * @param selfClosing if the element should contain children or not
+     */
     public PMMLElement(String nodeType, Map<String, String> attributes, List<Node> childNodes, boolean selfClosing) {
         super(nodeType, "", "");
         this.attributes = attributes;
@@ -182,6 +197,10 @@ public class PMMLElement extends Node {
         return build + (content.length() > 0 ? "\n" + content : "") + "\n</" + this.nodeType + ">";
     }
 
+    /**
+     * Writes the current PMMLElement to /output/PMMLOutput.xml
+     * @throws Exception
+     */
     public void writeToFile() throws Exception {
         File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput.xml");
         //TODO: check for folder

@@ -23,6 +23,11 @@ public class ECLCompiler {
      * @throws Exception
      */
     public ECLCompiler(String eclFilePath) throws Exception {
+
+        if (!checkECLExtension(eclFilePath)) {
+            throw new Exception("Not a valid .ecl file");
+        }
+
         JSONObject settings = new JSONObject(getJSONString());
 
         String eclBinary = settings.getString("eclBinary");
@@ -167,6 +172,11 @@ public class ECLCompiler {
         }
         in.close();
         return fileContents;
+    }
+
+    private boolean checkECLExtension(String filepath) {
+        Pattern acceptableEndings = Pattern.compile("(\\.(ecl))$", Pattern.CASE_INSENSITIVE);
+        return acceptableEndings.matcher(filepath).find();
     }
 
     private static String getJSONString() throws Exception{

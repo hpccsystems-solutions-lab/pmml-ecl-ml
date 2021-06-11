@@ -11,11 +11,14 @@ import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 public class PMMLConverter {
 
-    private static String currDir = System.getProperty("user.dir");
-    //find first with functionName/algorithmName
-    //get functionName and tag
-    //
-    LinkedList<ECLElement> ecl;
+    private static final String currDir = System.getProperty("user.dir");
+    private LinkedList<ECLElement> ecl;
+
+    /**
+     * Converts a root PMMLElement into its corresponding ECL and is outputted in /output.
+     * @param root The root of the Element you want to be converted.
+     * @throws Exception
+     */
     public PMMLConverter(PMMLElement root) throws Exception {
         PMMLElement model = root.firstNodeWithTag("RegressionModel");
         String functionName = model.getValue("algorithmName");
@@ -56,14 +59,6 @@ public class PMMLConverter {
         modelECL.add(new ECLElement("//Use `linearRegression.Predict(matrixNF, model2NF);` to predict new values."));
         modelECL.add(new ECLElement("OUTPUT(model);"));
         return modelECL;
-    }
-
-    public String eclToString() {
-        String full = "";
-        for (int i = 0; i < ecl.size(); i++) {
-            full += ecl.get(i).toString() + ";\n";
-        }
-        return full;
     }
 
     public LinkedList<ECLElement> getECL() {

@@ -5,8 +5,14 @@ import com.hpccsystems.pmml2ecl.ecl.ECLParser;
 
 public class ECLConverter {
 
-    private static String currDir = System.getProperty("user.dir");
+    private static final String currDir = System.getProperty("user.dir");
 
+    /**
+     * Runs through the lifecycle of compiling the ECL, getting it's results and parsing the result XML.
+     * The result is a PMML file in the /output folder.
+     * @param absoluteFilePath the .ECL file to be run
+     * @throws Exception
+     */
     public ECLConverter(String absoluteFilePath) throws Exception {
         try {
             new ECLCompiler(absoluteFilePath);

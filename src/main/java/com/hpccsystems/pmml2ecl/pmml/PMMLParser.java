@@ -11,15 +11,15 @@ public class PMMLParser {
     /**
      * Creates an instance of a PMMLElement given a file path. Will throw errors for non .xml or .pmml files or
      * if there is more than one root element.
-     * @param filepath
+     * @param absoluteFilepath The absolute filepath of the PMML file to be parsed.
      * @throws Exception 
      */
-    public PMMLParser(String filepath) throws Exception {
+    public PMMLParser(String absoluteFilepath) throws Exception {
         Pattern acceptableEndings = Pattern.compile("(\\.(xml|pmml))$", Pattern.CASE_INSENSITIVE);
-        if (!acceptableEndings.matcher(filepath).find()) {
+        if (!acceptableEndings.matcher(absoluteFilepath).find()) {
             throw new Exception("File type not accepted.");
         }
-        File file = new File(filepath);
+        File file = new File(absoluteFilepath);
         Scanner in = new Scanner(file);
         String fileContents = "";
         while(in.hasNextLine()) {
@@ -33,7 +33,7 @@ public class PMMLParser {
         rootNode = (PMMLElement) rootNode.childNodes.get(0);
     }
 
-    public PMMLParser(String fileContents, boolean differentiator) {
+    private PMMLParser(String fileContents, boolean differentiator) {
         rootNode = (PMMLElement) new PMMLElement(null, null, fileContents, false).childNodes.get(0);
     }
 
