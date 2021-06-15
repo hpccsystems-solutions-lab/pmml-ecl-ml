@@ -5,5 +5,4 @@ IMPORT LinearRegression as LR;
 model := DATASET([{1, 1, 1, 0.9999999999998498},
     {1, 1, 2, 2.000000000000026}], Types.Layout_Model);
 linearRegression := LR.OLS();
-//Use `linearRegression.Predict(matrixNF, model2NF);` to predict new values.
-OUTPUT(model);
+//Use `linearRegression.Predict(matrixNF, model);` to predict new values after this line.

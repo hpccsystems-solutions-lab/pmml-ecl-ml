@@ -8,11 +8,31 @@ import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
+import com.hpccsystems.pmml2ecl.pmml.PMMLParser;
 
 public class PMMLConverter {
 
     private static final String currDir = System.getProperty("user.dir");
     private LinkedList<ECLElement> ecl;
+
+    public PMMLConverter(String absoluteFilePath) throws Exception {
+        PMMLParser parser = new PMMLParser(absoluteFilePath);
+        PMMLElement root = parser.getRoot();
+        PMMLElement model = root.firstNodeWithTag("RegressionModel");
+        String functionName = model.getValue("algorithmName");
+        ecl = new LinkedList<>();
+        ecl.add(new ECLElement("IMPORT ML_Core;"));
+        ecl.add(new ECLElement("IMPORT ML_Core.Types;"));
+        ecl.add(new ECLElement("IMPORT ML_Core.ModelOps2 as ModelOps2;"));
+        switch (functionName) {
+            case "LinearRegression":
+                ecl.addAll(getEclFromLinearRegression(model));
+                break;
+            default:
+                break;
+        }
+        ECLParser.writeToFile(ecl);
+    }
 
     /**
      * Converts a root PMMLElement into its corresponding ECL and is outputted in /output.
@@ -33,15 +53,13 @@ public class PMMLConverter {
             default:
                 break;
         }
+        ECLParser.writeToFile(ecl);
     }
 
     private LinkedList<ECLElement> getEclFromLinearRegression(PMMLElement model) {
         LinkedList<ECLElement> modelECL = new LinkedList<>();
         PMMLElement schema = model.firstNodeWithTag("MiningSchema");
         PMMLElement table = model.firstNodeWithTag("RegressionTable");
-        System.out.println(schema);
-        System.out.println("------");
-        System.out.println(table);
 
         modelECL.add(new ECLElement("IMPORT LinearRegression as LR;"));
         //Just for the DATASET
@@ -56,8 +74,7 @@ public class PMMLConverter {
         modelECL.add(new ECLElement(finalElement));
 
         modelECL.add(new ECLElement("linearRegression := LR.OLS();"));
-        modelECL.add(new ECLElement("//Use `linearRegression.Predict(matrixNF, model2NF);` to predict new values."));
-        modelECL.add(new ECLElement("OUTPUT(model);"));
+        modelECL.add(new ECLElement("//Use `linearRegression.Predict(matrixNF, model);` to predict new values after this line."));
         return modelECL;
     }
 

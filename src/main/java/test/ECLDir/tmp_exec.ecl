@@ -1,30 +1,10 @@
 IMPORT ML_Core;
 IMPORT ML_Core.Types;
-IMPORT PBblas;
-IMPORT PBblas.Types;
+IMPORT ML_Core.ModelOps2 as ModelOps2;
 IMPORT LinearRegression as LR;
-
-pointRecord := RECORD
-        INTEGER id;
-        real A1;
-END;
-
-xPoints := DATASET([
-    {0, 3},
-    {1, 5},
-    {2, 6.5}
-], pointRecord);
-
-yPoints := DATASET([
-    {0, 7},
-    {1, 11},
-    {2, 14}
-], pointRecord);
-
-ML_Core.ToField(xPoints, xPointsNF);
-ML_Core.ToField(yPoints, yPointsNF);
-
-linRegress := LR.OLS(xPointsNF, yPointsNF);
-OUTPUT(linRegress.GetModel);
-OUTPUT('Hello World');
-
+model := DATASET([{1, 1, 1, 0.9999999999998498},
+    {1, 1, 2, 2.000000000000026}], Types.Layout_Model);
+linearRegression := LR.OLS();
+//Use `linearRegression.Predict(matrixNF, model);` to predict new values.
+matrix := DATASET([{1, 1, 1, 5}], Types.NumericField);
+OUTPUT(linearRegression.Predict(matrix, model));
