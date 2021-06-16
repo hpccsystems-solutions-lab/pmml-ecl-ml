@@ -1,39 +1,35 @@
-package com.hpccsystems.pmml2ecl.ecl;
+package com.hpccsystems.pmml2ecl.ecl.algorithms;
+
+import com.hpccsystems.pmml2ecl.Node;
+import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hpccsystems.pmml2ecl.Node;
-import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
+public class LinearRegression {
 
-public class XMLMLConverter {
-
-    private PMMLElement rootData;
-
-    /**
-     * Just a note, this is XML not PMML. It just so hsppens to work for XML in general lol.
-     */
-    public XMLMLConverter(PMMLElement rootData) {
-        this.rootData = rootData;
-    }
-    
-    public PMMLElement toLinearRegression() {
+    public static PMMLElement toLinearRegression(PMMLElement rootECL) {
         PMMLElement linearRegressionRoot = new PMMLElement("PMML", "version=\"4.0\"", "", false);
 
         PMMLElement header = new PMMLElement("Header", "", "", true);
 
         linearRegressionRoot.addChild(header);
 
-        PMMLElement model = rootData.firstNodeWithTag("Dataset");
+        PMMLElement model = rootECL.firstNodeWithTag("Dataset");
 
         List<Node> fields = new ArrayList<>();
         List<Node> coefficients = new ArrayList<>();
+        String intercept = "";
 
         for(Node elem : model.childNodes) {
             String field = ((PMMLElement) elem).firstNodeWithTag("number").content;
             String value = ((PMMLElement) elem).firstNodeWithTag("value").content;
+            if (field.equals("1")) {
+                intercept = value;
+                continue;
+            }
             Map<String, String> attribs = new HashMap<>();
             attribs.put("name", field);
             fields.add(new PMMLElement("MiningField", attribs, null, true));
@@ -44,7 +40,9 @@ public class XMLMLConverter {
         }
 
         PMMLElement schema = new PMMLElement("MiningSchema", new HashMap<>(), fields, false);
-        PMMLElement table = new PMMLElement("RegressionTable", new HashMap<>(), coefficients, false);
+        Map<String, String> tableAttr = new HashMap<>();
+        tableAttr.put("intercept", intercept);
+        PMMLElement table = new PMMLElement("RegressionTable", tableAttr, coefficients, false);
 
         Map<String, String> regMap = new HashMap<>();
         regMap.put("functionName", "regression");

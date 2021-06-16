@@ -10,8 +10,8 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-//        endToEndECLLinearRegression();
-        endToEndPMMLLinearRegression();
+        endToEndECLLinearRegression();
+//        endToEndPMMLLinearRegression();
     }
 
     static void testPMMLParser() throws Exception {
@@ -31,15 +31,15 @@ public class ParserTester {
 //    }
 //
 //    static void testCompiler() throws Exception {
-//        ECLCompiler compiler = new ECLCompiler(currDir + "/src/main/java/test/LinearRegressionTest.ecl");
+//        ECLCompiler compiler = new ECLCompiler(currDir + "/src/main/java/test/MultipleLinearRegressionTest.ecl");
 //    }
 
     static void endToEndPMMLLinearRegression() throws Exception {
-        new PMMLConverter(currDir + "/src/main/java/test/BasicLinearRegression.xml");
+        new PMMLConverter(currDir + "/src/main/java/test/resources/LinearRegression.xml");
     }
 
     static void endToEndECLLinearRegression() throws Exception {
-        new ECLConverter(currDir + "/src/main/java/test/LinearRegressionTest.ecl");
+        new ECLConverter(currDir + "/src/main/java/test/MultipleLinearRegressionTest.ecl");
     }
 
 }

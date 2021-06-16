@@ -1,0 +1,15 @@
+<PMML version="4.0">
+    <Header/>
+    <RegressionModel functionName="regression" algorithmName="LinearRegression">
+        <MiningSchema>
+            <MiningField name="1"/>
+            <MiningField name="2"/>
+            <MiningField name="3"/>
+        </MiningSchema>
+        <RegressionTable>
+            <NumericPredictor name="1" coefficient="2.999999999999873"/>
+            <NumericPredictor name="2" coefficient="1.000000000000016"/>
+            <NumericPredictor name="3" coefficient="2.000000000000033"/>
+        </RegressionTable>
+    </RegressionModel>
+</PMML>

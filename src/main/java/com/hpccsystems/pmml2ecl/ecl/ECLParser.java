@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import com.hpccsystems.pmml2ecl.ecl.algorithms.LinearRegression;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 public class ECLParser {
@@ -40,7 +41,7 @@ public class ECLParser {
     }
 
     private void convertToPMML() {
-        this.rootNode = new XMLMLConverter(this.rootNode).toLinearRegression();
+        this.rootNode = LinearRegression.toLinearRegression(rootNode);
     }
 
     /**
