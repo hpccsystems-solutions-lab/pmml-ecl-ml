@@ -8,9 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LinearRegression {
+public class LinearRegression implements Algorithm {
 
-    public static PMMLElement toLinearRegression(PMMLElement rootECL) {
+    private PMMLElement rootECL;
+
+    public LinearRegression(PMMLElement rootECL) {
+        this.rootECL = rootECL;
+    }
+
+    public PMMLElement getStoredModel() {
         PMMLElement linearRegressionRoot = new PMMLElement("PMML",
                 "version=\"4.4\" xmlns=\"http://www.dmg.org/PMML-4_4\"", "", false);
 

@@ -9,9 +9,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class LinearRegression {
+public class LinearRegression implements Algorithm {
 
-    public static LinkedList<ECLElement> getEclFromModel(PMMLElement model) {
+    private PMMLElement model;
+
+    public LinearRegression(PMMLElement model) {
+        this.model = model;
+    }
+
+    public LinkedList<ECLElement> getEclFromModel() {
         LinkedList<ECLElement> modelECL = new LinkedList<>();
         PMMLElement schema = model.firstNodeWithTag("MiningSchema");
         PMMLElement table = model.firstNodeWithTag("RegressionTable");

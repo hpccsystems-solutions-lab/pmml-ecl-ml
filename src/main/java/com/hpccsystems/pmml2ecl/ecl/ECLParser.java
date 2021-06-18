@@ -41,7 +41,7 @@ public class ECLParser {
     }
 
     private void convertToPMML() {
-        this.rootNode = LinearRegression.toLinearRegression(rootNode);
+        this.rootNode = new LinearRegression(rootNode).getStoredModel();
     }
 
     /**

@@ -10,6 +10,7 @@ import com.hpccsystems.pmml2ecl.ecl.ECLParser;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 import com.hpccsystems.pmml2ecl.pmml.PMMLParser;
 import com.hpccsystems.pmml2ecl.pmml.algorithms.LinearRegression;
+import com.hpccsystems.pmml2ecl.pmml.algorithms.LogisticRegression;
 
 public class PMMLConverter {
 
@@ -32,7 +33,10 @@ public class PMMLConverter {
         ecl.add(new ECLElement("IMPORT ML_Core.ModelOps2 as ModelOps2;"));
         switch (functionName) {
             case "LinearRegression":
-                ecl.addAll(LinearRegression.getEclFromModel(model));
+                ecl.addAll(new LinearRegression(model).getEclFromModel());
+                break;
+            case "LogisticRegression":
+                ecl.addAll(new LogisticRegression(model).getEclFromModel());
                 break;
             default:
                 break;
