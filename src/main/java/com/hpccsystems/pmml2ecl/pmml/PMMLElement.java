@@ -228,6 +228,11 @@ public class PMMLElement extends Node {
         return allNodes;
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public String getValue(String key) {
         return attributes.get(key);
     }
