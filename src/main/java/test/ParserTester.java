@@ -10,13 +10,13 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-        endToEndECLLinearRegression();
+//        endToEndECLLinearRegression();
 //        endToEndPMMLLinearRegression();
     }
 
     static void testPMMLParser() throws Exception {
-        PMMLElement elem = new PMMLParser(currDir + "/src/test/resources/ExampleECLResult.xml").getRoot();
-        System.out.println(elem.firstNodeWithTag("Dataset").toString());
+        PMMLElement elem = new PMMLParser(currDir + "/src/main/java/test/resources/LinearRegression.xml").getRoot();
+        System.out.println(elem.toString());
     }
 
     // REPLACED W endToEndECLLinearRegression();

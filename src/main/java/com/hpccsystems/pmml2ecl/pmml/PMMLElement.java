@@ -6,12 +6,14 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.hpccsystems.pmml2ecl.Node;
 
 public class PMMLElement extends Node {
 
     private boolean selfClosing;
+    private boolean comment;
 
     /**
      * A constructor for a PMMLElement that parses the attributes and content based on the input
@@ -24,6 +26,24 @@ public class PMMLElement extends Node {
     public PMMLElement(String nodeType, String rawAttributes, String content, boolean selfClosing) {
         super(nodeType, rawAttributes, content);
         this.selfClosing = selfClosing;
+        this.comment = false;
+        splitContent();
+        splitAttributes();
+    }
+
+    /**
+     * A constructor for a PMMLElement that parses the attributes and content based on the input
+     * strings.
+     * @param nodeType
+     * @param rawAttributes a string that contains all the attribute key/value pairs.
+     * @param content a string that contains all of the inner text or inner PMML.
+     * @param selfClosing if the element should contain children or not
+     */
+    public PMMLElement(String nodeType, String rawAttributes, String content,
+                       boolean selfClosing, boolean comment) {
+        super(nodeType, rawAttributes, content);
+        this.selfClosing = selfClosing;
+        this.comment = comment;
         splitContent();
         splitAttributes();
     }
@@ -40,6 +60,7 @@ public class PMMLElement extends Node {
         this.attributes = attributes;
         this.childNodes = childNodes;
         this.selfClosing = selfClosing;
+        this.comment = false;
         joinMapAttributes();
     }
 
@@ -49,6 +70,10 @@ public class PMMLElement extends Node {
 
     public void appendContent(byte s) {
         this.content += s;
+    }
+
+    public void setComment() {
+        comment = true;
     }
 
     private void joinMapAttributes() {
@@ -78,28 +103,53 @@ public class PMMLElement extends Node {
 
     private void splitContent() {
         String cont = this.getContent().trim();
-        int index = cont.indexOf('<', 0);
+        int index = cont.indexOf('<');
+
+        if (this.comment) {
+            this.content = cont;
+            return;
+        }
         while (index >= 0 && index < cont.length()) {
             int endFirstTag = cont.indexOf('>', index);
-            String[] tagAndAttributes = cont.substring(index+1, endFirstTag).split(" ");
+            String[] tagAndAttributes = cont.substring(index + 1, endFirstTag).split(" ");
             String tag = tagAndAttributes[0];
-            if (tagAndAttributes[tagAndAttributes.length-1].endsWith("/")){
-                PMMLElement innerElem = new PMMLElement(tag, 
-                    cont.substring(index+1, endFirstTag - 1).replaceFirst(tag, "").trim(), 
-                    "", true);
+            if (tagAndAttributes[tagAndAttributes.length - 1].endsWith("/")) {
+                //If it is a self-closing tag..
+                PMMLElement innerElem = new PMMLElement(tag,
+                        cont.substring(index + 1, endFirstTag - 1).replaceFirst(tag, "").trim(),
+                        "", true);
                 this.childNodes.add(innerElem);
                 cont = cont.substring(endFirstTag + 1).trim();
+            } else if (checkComment(cont.substring(index + 1))) {
+                int beginComment = cont.indexOf("<!--");
+                int endComment = cont.indexOf("-->");
+                String comment = cont.substring(beginComment + 4, endComment);
+                PMMLElement innerElem = new PMMLElement("", "", comment, false, true);
+                this.childNodes.add(innerElem);
+                cont = cont.substring(endComment + 3);
             } else {
+                //if it actually has a closing tag.
                 String endingTag = "</" + tag + ">";
                 int endingTagIndex = cont.indexOf(endingTag, endFirstTag);
-                PMMLElement innerElem = new PMMLElement(tag, 
-                    cont.substring(index+1, endFirstTag).replaceFirst(tag, "").trim(), 
-                    cont.substring(endFirstTag + 1, endingTagIndex).trim(), false);
+                //This is where the recursion happens.
+                PMMLElement innerElem = new PMMLElement(tag,
+                        cont.substring(index + 1, endFirstTag).replaceFirst(tag, "").trim(),
+                        cont.substring(endFirstTag + 1, endingTagIndex).trim(), false);
                 this.childNodes.add(innerElem);
                 cont = cont.substring(endingTagIndex + endingTag.length());
             }
         }
         this.content = cont.trim();
+    }
+
+    /**
+     * returns true if found beginning comment, false is not found
+     * @param check
+     * @return
+     */
+    private boolean checkComment(String check) {
+        Pattern commentCheck = Pattern.compile("^(!--)", Pattern.CASE_INSENSITIVE);
+        return commentCheck.matcher(check).find();
     }
 
     /**
@@ -189,6 +239,9 @@ public class PMMLElement extends Node {
     public String toString() {
         if (this.selfClosing) {
             return "<" + this.nodeType + (this.getRawAttributes().length() > 0 ? " " + this.getRawAttributes() : "") + "/>";
+        }
+        if (this.comment) {
+            return "<!-- " + this.content + " -->";
         }
         String build = "<" + this.nodeType + (this.getRawAttributes().length() > 0 ? " " + this.getRawAttributes() : "") + ">";
         for (int i = 0; i < this.childNodes.size(); i++) {

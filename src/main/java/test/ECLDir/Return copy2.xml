@@ -1,0 +1,43 @@
+
+<Result>
+    <Dataset name='Result 1'>
+        <Row><wi>1</wi><id>0</id><number>1</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>2</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>3</number><value>1e-08</value></Row>
+        <Row><wi>1</wi><id>0</id><number>4</number><value>2.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>5</number><value>2.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>6</number><value>1.0</value></Row>
+
+        <Row><wi>1</wi><id>1</id><number>1</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>2</id><number>1</number><value>0.1388483949230101</value></Row>
+        <Row><wi>1</wi><id>3</id><number>1</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>4</id><number>1</number><value>0.0</value></Row>
+        <Row><wi>1</wi><id>5</id><number>1</number><value>0.009709678663057275</value></Row>
+        <Row><wi>1</wi><id>6</id><number>1</number><value>0.006796775072871242</value></Row>
+        <Row><wi>1</wi><id>7</id><number>1</number><value>0.1388484049230101</value></Row>
+        <Row><wi>1</wi><id>8</id><number>1</number><value>315.4592145847601</value></Row>
+        <Row><wi>1</wi><id>9</id><number>1</number><value>315.8514094832314</value></Row>
+        <Row><wi>1</wi><id>10</id><number>1</number><value>26.89591939251651</value></Row>
+
+        <Row><wi>1</wi><id>1</id><number>2</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>2</id><number>2</number><value>0.1388483949230101</value></Row>
+        <Row><wi>1</wi><id>3</id><number>2</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>4</id><number>2</number><value>0.0</value></Row>
+        <Row><wi>1</wi><id>5</id><number>2</number><value>0.009709678663057275</value></Row>
+        <Row><wi>1</wi><id>6</id><number>2</number><value>0.006796775072871242</value></Row>
+        <Row><wi>1</wi><id>7</id><number>2</number><value>0.1388484049230101</value></Row>
+        <Row><wi>1</wi><id>8</id><number>2</number><value>315.4592145847601</value></Row>
+        <Row><wi>1</wi><id>9</id><number>2</number><value>315.8514094832314</value></Row>
+        <Row><wi>1</wi><id>10</id><number>2</number><value>26.89591939251651</value></Row>
+    </Dataset>
+    <Dataset name='Result 2'>
+        <!-- first dependent -->
+        <Row><wi>1</wi><ind_col>0</ind_col><dep_nom>1</dep_nom><w>0.009709678663057275</w><se>315.4592145847601</se></Row>
+        <Row><wi>1</wi><ind_col>1</ind_col><dep_nom>1</dep_nom><w>0.006796775072871242</w><se>315.8514094832314</se></Row>
+        <Row><wi>1</wi><ind_col>2</ind_col><dep_nom>1</dep_nom><w>0.1388484049230101</w><se>26.89591939251651</se></Row>
+        <!-- second dependent -->
+        <Row><wi>1</wi><ind_col>0</ind_col><dep_nom>2</dep_nom><w>0.009709678663057275</w><se>315.4592145847601</se></Row>
+        <Row><wi>1</wi><ind_col>1</ind_col><dep_nom>2</dep_nom><w>0.006796775072871242</w><se>315.8514094832314</se></Row>
+        <Row><wi>1</wi><ind_col>2</ind_col><dep_nom>2</dep_nom><w>0.1388484049230101</w><se>26.89591939251651</se></Row>
+    </Dataset>
+</Result>

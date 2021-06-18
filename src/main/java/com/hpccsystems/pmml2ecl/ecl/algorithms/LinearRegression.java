@@ -11,7 +11,8 @@ import java.util.Map;
 public class LinearRegression {
 
     public static PMMLElement toLinearRegression(PMMLElement rootECL) {
-        PMMLElement linearRegressionRoot = new PMMLElement("PMML", "version=\"4.0\"", "", false);
+        PMMLElement linearRegressionRoot = new PMMLElement("PMML",
+                "version=\"4.4\" xmlns=\"http://www.dmg.org/PMML-4_4\"", "", false);
 
         PMMLElement header = new PMMLElement("Header", "", "", true);
 

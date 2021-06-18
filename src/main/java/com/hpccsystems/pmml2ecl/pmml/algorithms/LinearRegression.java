@@ -29,7 +29,7 @@ public class LinearRegression {
 
         //
 
-        finalElement += String.join(",\n    ", dataPoints.subList(0, dataPoints.size() - 2)) + "], Types.Layout_Model);\n";
+        finalElement += String.join(",\n    ", dataPoints.subList(0, dataPoints.size() - 1)) + "], Types.Layout_Model);\n";
         modelECL.add(new ECLElement(finalElement));
         modelECL.add(new ECLElement(dataPoints.get(dataPoints.size() - 1)));
 
@@ -49,7 +49,7 @@ public class LinearRegression {
             PMMLElement tableNode = table.firstNodeWithAttribute("name", keyName);
             if (tableNode != null) {
                 String value = tableNode.getValue("coefficient");
-                finalTable += "// X" + counter + " - " + value + "\n";
+                finalTable += "// X" + counter + " - " + value + " (" + keyName + ")\n";
                 stringsToAdd.add("{1, 1, " + counter + ", " + value + "}");
                 counter++;
             }
@@ -67,7 +67,7 @@ public class LinearRegression {
             PMMLElement tableNode = table.firstNodeWithAttribute("name", keyName);
             if (tableNode != null) {
                 String value = table.firstNodeWithAttribute("name", keyName).getValue("coefficient");
-                finalTable += "// X" + counter + " - " + value + "\n";
+                finalTable += "// X" + counter + " - " + value + "(" + keyName + ")\n";
                 stringsToAdd.add("{1, 1, " + counter + ", " + value + "}");
                 counter++;
             }

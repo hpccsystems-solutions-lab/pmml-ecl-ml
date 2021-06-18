@@ -1,0 +1,24 @@
+
+<Result>
+    <Dataset name='Result 1'>
+        <Row><wi>1</wi><id>0</id><number>1</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>2</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>3</number><value>1e-08</value></Row>
+        <Row><wi>1</wi><id>0</id><number>4</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>5</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>0</id><number>6</number><value>1.0</value></Row>
+
+        <Row><wi>1</wi><id>1</id><number>1</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>2</id><number>1</number><value>1.342245835749858</value></Row> <!-- intercept -->
+        <Row><wi>1</wi><id>3</id><number>1</number><value>1.0</value></Row>
+        <Row><wi>1</wi><id>4</id><number>1</number><value>0.0</value></Row> <!-- indep col -->
+        <Row><wi>1</wi><id>5</id><number>1</number><value>1.342245845749858</value></Row> <!-- intercept -->
+        <Row><wi>1</wi><id>6</id><number>1</number><value>0.9395720920219901</value></Row>
+        <Row><wi>1</wi><id>7</id><number>1</number><value>181.349683519251</value></Row>
+        <Row><wi>1</wi><id>8</id><number>1</number><value>259.0655839341114</value></Row>
+    </Dataset>
+    <Dataset name='Result 2'>
+        <Row><wi>1</wi><ind_col>0</ind_col><dep_nom>1</dep_nom><w>1.342245845749858</w><se>181.349683519251</se></Row>
+        <Row><wi>1</wi><ind_col>1</ind_col><dep_nom>1</dep_nom><w>0.9395720920219901</w><se>259.0655839341114</se></Row>
+    </Dataset>
+</Result>
