@@ -248,11 +248,16 @@ public class PMMLElement extends Node {
         if (this.comment) {
             return "<!-- " + this.content + " -->";
         }
-        String build = "<" + this.nodeType + (this.getRawAttributes().length() > 0 ? " " + this.getRawAttributes() : "") + ">";
-        for (int i = 0; i < this.childNodes.size(); i++) {
-            build += ("\n" + this.childNodes.get(i).toString()).replace("\n", "\n   ");
+        if (this.childNodes.size() > 0) {
+            String build = "<" + this.nodeType + (this.getRawAttributes().length() > 0 ? " " + this.getRawAttributes() : "") + ">";
+            for (int i = 0; i < this.childNodes.size(); i++) {
+                build += ("\n" + this.childNodes.get(i).toString()).replace("\n", "\n    ");
+            }
+            return build + (content.length() > 0 ? "\n" + content : "") + "\n</" + this.nodeType + ">";
+        } else {
+            return  "<" + this.nodeType + (this.getRawAttributes().length() > 0 ? " " + this.getRawAttributes() : "") + ">" +
+                    content + "</" + this.nodeType + ">";
         }
-        return build + (content.length() > 0 ? "\n" + content : "") + "\n</" + this.nodeType + ">";
     }
 
     /**
@@ -265,6 +270,22 @@ public class PMMLElement extends Node {
         if (!file.exists()) {
            file.createNewFile();
         } 
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(this.toString());
+        bw.close();
+    }
+
+    /**
+     * Writes the current PMMLElement to /output/PMMLOutput.xml
+     * @throws Exception
+     */
+    public void writeToFile(String identifier) throws Exception {
+        File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput-" + identifier.trim() + ".xml");
+        //TODO: check for folder
+        if (!file.exists()) {
+            file.createNewFile();
+        }
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(this.toString());

@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import com.hpccsystems.pmml2ecl.ecl.algorithms.LinearRegression;
+import com.hpccsystems.pmml2ecl.ecl.algorithms.LogisticRegression;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 public class ECLParser {
@@ -40,8 +41,23 @@ public class ECLParser {
         convertToPMML();
     }
 
-    private void convertToPMML() {
-        this.rootNode = new LinearRegression(rootNode).getStoredModel();
+    private void convertToPMML() throws Exception {
+        PMMLElement type = this.rootNode.firstNodeWithAttribute("name", "Result 1");
+        PMMLElement model = this.rootNode.firstNodeWithAttribute("name", "Result 2");
+        if (type != null && model != null) {
+            switch (type.childNodes.get(0).childNodes.get(0).content) {
+                case "LinearRegression":
+                    new LinearRegression(model).writeStoredModel();
+                    break;
+                case "LogisticRegression":
+                    new LogisticRegression(model).writeStoredModel();
+                    break;
+                default:
+                    throw new Exception("Model type not well defined or outputted correctly.");
+            }
+        } else {
+            throw new Exception("The model type or model was not defined properly or outputted in .ecl file.");
+        }
     }
 
     /**

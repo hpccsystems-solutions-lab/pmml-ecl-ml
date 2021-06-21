@@ -10,13 +10,14 @@ import java.util.Map;
 
 public class LinearRegression implements Algorithm {
 
-    private PMMLElement rootECL;
+    private PMMLElement rootModel;
 
-    public LinearRegression(PMMLElement rootECL) {
-        this.rootECL = rootECL;
+    public LinearRegression(PMMLElement rootModel) {
+        this.rootModel = rootModel;
     }
 
     public PMMLElement getStoredModel() {
+        //TODO: Migrate to multiple work-item workflow
         PMMLElement linearRegressionRoot = new PMMLElement("PMML",
                 "version=\"4.4\" xmlns=\"http://www.dmg.org/PMML-4_4\"", "", false);
 
@@ -24,7 +25,7 @@ public class LinearRegression implements Algorithm {
 
         linearRegressionRoot.addChild(header);
 
-        PMMLElement model = rootECL.firstNodeWithTag("Dataset");
+        PMMLElement model = rootModel;
 
         List<Node> fields = new ArrayList<>();
         List<Node> coefficients = new ArrayList<>();
@@ -60,8 +61,11 @@ public class LinearRegression implements Algorithm {
         regModel.addChild(table);
 
         linearRegressionRoot.addChild(regModel);
-
         return linearRegressionRoot;
     }
 
+    @Override
+    public void writeStoredModel() throws Exception {
+        getStoredModel().writeToFile();
+    }
 }

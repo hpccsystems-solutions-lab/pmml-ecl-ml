@@ -6,4 +6,6 @@ public interface Algorithm {
 
     PMMLElement getStoredModel();
 
+    void writeStoredModel() throws Exception;
+
 }

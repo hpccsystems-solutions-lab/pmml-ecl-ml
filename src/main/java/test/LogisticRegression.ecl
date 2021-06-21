@@ -68,7 +68,7 @@ testData := DATASET([
 regressionModel := LR.BinomialLogisticRegression(max_iter:=4).getModel(observations, classifications);
 betas := LR.ExtractBeta(regressionModel);
 
-OUTPUT('LinearRegression');
+OUTPUT('LogisticRegression');
 OUTPUT(regressionModel);
 //OUTPUT(LR.LogitPredict(betas, testData));
 

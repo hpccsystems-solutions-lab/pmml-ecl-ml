@@ -12,6 +12,7 @@ public class ParserTester {
     public static void main(String[] args) throws Exception {
 //        endToEndECLLinearRegression();
 //        endToEndPMMLLinearRegression();
+        logisticRegression();
     }
 
     static void testPMMLParser() throws Exception {
@@ -39,7 +40,12 @@ public class ParserTester {
     }
 
     static void endToEndECLLinearRegression() throws Exception {
+        //TODO: update .ecl to new format.
         new ECLConverter(currDir + "/src/main/java/test/MultipleLinearRegressionTest.ecl");
+    }
+
+    static void logisticRegression() throws Exception {
+        new ECLConverter(currDir + "/src/main/java/test/LogisticRegression.ecl");
     }
 
 }
