@@ -10,9 +10,9 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-//        endToEndECLLinearRegression();
+        endToEndECLLinearRegression();
 //        endToEndPMMLLinearRegression();
-        logisticRegression();
+//        logisticRegression();
     }
 
     static void testPMMLParser() throws Exception {
@@ -41,7 +41,7 @@ public class ParserTester {
 
     static void endToEndECLLinearRegression() throws Exception {
         //TODO: update .ecl to new format.
-        new ECLConverter(currDir + "/src/main/java/test/MultipleLinearRegressionTest.ecl");
+        new ECLConverter(currDir + "/src/main/java/test/LinearRegressionTests/MultipleWorkItemsLinear.ecl");
     }
 
     static void logisticRegression() throws Exception {

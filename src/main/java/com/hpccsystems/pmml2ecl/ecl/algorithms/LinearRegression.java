@@ -2,6 +2,7 @@ package com.hpccsystems.pmml2ecl.ecl.algorithms;
 
 import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
+import com.hpccsystems.pmml2ecl.pmml.operations.ElementFinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,8 +17,21 @@ public class LinearRegression implements Algorithm {
         this.rootModel = rootModel;
     }
 
-    public PMMLElement getStoredModel() {
-        //TODO: Migrate to multiple work-item workflow
+    @Override
+    public void writeStoredModel() throws Exception {
+        List<PMMLElement> elements = new ArrayList<>();
+        for (Node n : rootModel.childNodes) {
+            elements.add((PMMLElement) n);
+        }
+        int workid = 1;
+        while (ElementFinder.hasElementWithTagContent(elements, "wi", Integer.toString(workid))) {
+            getFile(ElementFinder.getAllWhereHasTagContent(elements, "wi", Integer.toString(workid)))
+                    .writeToFile("LinearRegression" + workid);
+            workid++;
+        }
+    }
+
+    private PMMLElement getFile(List<PMMLElement> elementsToWorkOn) {
         PMMLElement linearRegressionRoot = new PMMLElement("PMML",
                 "version=\"4.4\" xmlns=\"http://www.dmg.org/PMML-4_4\"", "", false);
 
@@ -25,13 +39,11 @@ public class LinearRegression implements Algorithm {
 
         linearRegressionRoot.addChild(header);
 
-        PMMLElement model = rootModel;
-
         List<Node> fields = new ArrayList<>();
         List<Node> coefficients = new ArrayList<>();
         String intercept = "";
 
-        for(Node elem : model.childNodes) {
+        for(Node elem : elementsToWorkOn) {
             String field = ((PMMLElement) elem).firstNodeWithTag("number").content;
             String value = ((PMMLElement) elem).firstNodeWithTag("value").content;
             if (field.equals("1")) {
@@ -62,10 +74,5 @@ public class LinearRegression implements Algorithm {
 
         linearRegressionRoot.addChild(regModel);
         return linearRegressionRoot;
-    }
-
-    @Override
-    public void writeStoredModel() throws Exception {
-        getStoredModel().writeToFile();
     }
 }

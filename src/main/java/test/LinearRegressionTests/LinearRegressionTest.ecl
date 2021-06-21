@@ -15,7 +15,7 @@ predRecord := RECORD
 END;
 
 depPoints := DATASET([
-    {0, 1},
+    {0, 2},
     {1, 5},
     {2, 6.5}
 ], pointRecord);
@@ -31,4 +31,5 @@ ML_Core.ToField(indepPoints, indepPointsNF);
 
 linRegress := LR.OLS(depPointsNF, indepPointsNF);
 
+OUTPUT('LinearRegression');
 OUTPUT(linRegress.GetModel);

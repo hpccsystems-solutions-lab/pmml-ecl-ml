@@ -33,4 +33,5 @@ ML_Core.ToField(depPoints, depPointsNF);
 ML_Core.ToField(indepPoints, indepPointsNF);
 
 linRegress := LR.OLS(depPointsNF, indepPointsNF);
+OUTPUT('LinearRegression');
 OUTPUT(linRegress.GetModel);

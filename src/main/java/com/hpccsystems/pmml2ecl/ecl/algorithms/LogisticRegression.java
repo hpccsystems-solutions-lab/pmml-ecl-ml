@@ -2,6 +2,7 @@ package com.hpccsystems.pmml2ecl.ecl.algorithms;
 
 import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
+import com.hpccsystems.pmml2ecl.pmml.operations.ElementFinder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,8 +39,9 @@ public class LogisticRegression implements Algorithm {
         }
 
         int workid = 1;
-        while (hasElementWithTagContent(rows, "wi", Integer.toString(workid))) {
-            List<PMMLElement> allBetasAndSE = getAllWhereHasTagContent(rows, "wi", Integer.toString(workid));
+        while (ElementFinder.hasElementWithTagContent(rows, "wi", Integer.toString(workid))) {
+            List<PMMLElement> allBetasAndSE =
+                    ElementFinder.getAllWhereHasTagContent(rows, "wi", Integer.toString(workid));
             int allSize = allBetasAndSE.size();
             if (allSize % 2 > 0) {
                 System.out.println("Something went wrong. Betas and SE not even.");
@@ -55,38 +57,33 @@ public class LogisticRegression implements Algorithm {
             Map<String, String> modelAttr = new HashMap<>();
             modelAttr.put("functionName", "classification");
             modelAttr.put("algorithmName", "LogisticRegression");
-            PMMLElement generalRegressionModel = new PMMLElement("GeneralRegressionModel", modelAttr, new ArrayList<>(), false);
+            PMMLElement generalRegressionModel =
+                    new PMMLElement("GeneralRegressionModel", modelAttr, new ArrayList<>(), false);
             modelRoot.addChild(generalRegressionModel);
 
             int depnom = 1;
             List<Node> parameters = new ArrayList<>();
-            while (hasElementWithTagContent(allBetasAndSE, "number", Integer.toString(depnom))) {
-                List<PMMLElement> betasWithDep = getAllWhereHasTagContent(allBetasAndSE, "number", Integer.toString(depnom));
+            while (ElementFinder.hasElementWithTagContent(allBetasAndSE, "number", Integer.toString(depnom))) {
+                List<PMMLElement> betasWithDep =
+                        ElementFinder.getAllWhereHasTagContent(allBetasAndSE, "number", Integer.toString(depnom));
                 int depSize = betasWithDep.size();
                 if (depSize % 2 > 0) {
                     System.out.println("Something went wrong. Number of rows in dependent column not even.");
                     depnom++;
                     continue;
                 }
-                List<PMMLElement> betas = getAllWhereHasTagInRange(betasWithDep, "id", 5, 5 + depSize / 2);
+                List<PMMLElement> betas =
+                        ElementFinder.getAllWhereHasTagInRange(betasWithDep, "id", 5, 5 + depSize / 2);
                 parameters.addAll(getSubParamMatrix(betas));
                 depnom++;
             }
-            PMMLElement paramMatrix = new PMMLElement("ParamMatrix", new HashMap<>(), new ArrayList<>(), false);
+            PMMLElement paramMatrix =
+                    new PMMLElement("ParamMatrix", new HashMap<>(), new ArrayList<>(), false);
             paramMatrix.addChildren(parameters);
             generalRegressionModel.addChild(paramMatrix);
             modelRoot.writeToFile("LogisticRegression" + workid);
             workid++;
         }
-    }
-
-    /**
-     * Deprecated.
-     * @return
-     */
-    @Override
-    public PMMLElement getStoredModel() {
-        return null;
     }
 
     private List<PMMLElement> getSubParamMatrix(List<PMMLElement> betas) {
@@ -109,49 +106,6 @@ public class LogisticRegression implements Algorithm {
         }
 
         return elements;
-    }
-
-    private boolean hasElementWithTagContent(List<PMMLElement> rows, String tag, String content) {
-        for (PMMLElement row : rows) {
-            PMMLElement findElem = row.firstNodeWithTag(tag);
-            if (findElem != null && findElem.content.equals(content)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private List<PMMLElement> getAllWhereHasTagContent(List<PMMLElement> rows, String tag, String content) {
-        List<PMMLElement> returnElements = new ArrayList<>();
-
-        for (PMMLElement row : rows) {
-            PMMLElement findElem = row.firstNodeWithTag(tag);
-            if (findElem != null && findElem.content.equals(content)) {
-                returnElements.add(row);
-            }
-        }
-
-        return returnElements;
-    }
-
-    private List<PMMLElement> getAllWhereHasTagInRange(List<PMMLElement> rows, String tag, int from, int to) {
-        List<PMMLElement> returnElements = new ArrayList<>();
-
-        for (PMMLElement row : rows) {
-            PMMLElement findElem = row.firstNodeWithTag(tag);
-            if (findElem != null) {
-                try {
-                    Integer value = Integer.parseInt(findElem.content);
-                    if (from <= value && value < to) {
-                        returnElements.add(row);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return returnElements;
     }
 
 
