@@ -5,3 +5,4 @@ eclcc.log
 pmml-ecl-ml.iml
 target/
 target/generated-sources/
+output/
