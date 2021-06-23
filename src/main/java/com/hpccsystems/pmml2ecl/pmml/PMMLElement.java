@@ -281,6 +281,8 @@ public class PMMLElement extends Node {
      * @throws Exception
      */
     public void writeToFile(String identifier) throws Exception {
+        File outputDir = new File(System.getProperty("user.dir") + "/output");
+        outputDir.mkdirs();
         File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput-" + identifier.trim() + ".xml");
         //TODO: check for folder
         if (!file.exists()) {

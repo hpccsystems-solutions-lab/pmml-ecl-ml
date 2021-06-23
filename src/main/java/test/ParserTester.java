@@ -10,9 +10,9 @@ public class ParserTester {
     static String currDir = System.getProperty("user.dir");
 
     public static void main(String[] args) throws Exception {
-        endToEndECLLinearRegression();
+//        endToEndECLLinearRegression();
 //        endToEndPMMLLinearRegression();
-//        logisticRegression();
+        logisticRegression();
     }
 
     static void testPMMLParser() throws Exception {

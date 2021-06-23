@@ -2,6 +2,7 @@ package com.hpccsystems.pmml2ecl.ecl.algorithms;
 
 import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
+import com.hpccsystems.pmml2ecl.pmml.operations.CommonElements;
 import com.hpccsystems.pmml2ecl.pmml.operations.ElementFinder;
 
 import java.util.ArrayList;
@@ -59,10 +60,11 @@ public class LogisticRegression implements Algorithm {
             modelAttr.put("algorithmName", "LogisticRegression");
             PMMLElement generalRegressionModel =
                     new PMMLElement("GeneralRegressionModel", modelAttr, new ArrayList<>(), false);
-            modelRoot.addChild(generalRegressionModel);
 
             int depnom = 1;
             List<Node> parameters = new ArrayList<>();
+            List<Node> pps = new ArrayList<>();
+            List<Node> categories = new ArrayList<>();
             while (ElementFinder.hasElementWithTagContent(allBetasAndSE, "number", Integer.toString(depnom))) {
                 List<PMMLElement> betasWithDep =
                         ElementFinder.getAllWhereHasTagContent(allBetasAndSE, "number", Integer.toString(depnom));
@@ -75,12 +77,38 @@ public class LogisticRegression implements Algorithm {
                 List<PMMLElement> betas =
                         ElementFinder.getAllWhereHasTagInRange(betasWithDep, "id", 5, 5 + depSize / 2);
                 parameters.addAll(getSubParamMatrix(betas));
+                if (depnom == 1) pps.addAll(getSubPPMatrix(betas));
+                Map<String, String> catAttr = new HashMap<>();
+                catAttr.put("value", Integer.toString(depnom));
+                categories.add(new PMMLElement("Value", catAttr, new ArrayList<>(), true));
                 depnom++;
             }
-            PMMLElement paramMatrix =
-                    new PMMLElement("ParamMatrix", new HashMap<>(), new ArrayList<>(), false);
+
+            PMMLElement dataDict = CommonElements.emptyElement("DataDictionary");
+            Map<String, String> dataAttr = new HashMap<>();
+            dataAttr.put("dataType", "string");
+            dataAttr.put("name", "class");
+            dataAttr.put("optype", "categorical");
+            PMMLElement dataCategories = new PMMLElement("DataField", dataAttr, categories, false);
+            dataDict.addChild(dataCategories);
+            modelRoot.addChild(dataDict);
+
+            PMMLElement ppMatrix = CommonElements.emptyElement("PPMatrix");
+            ppMatrix.addChildren(pps);
+
+            PMMLElement paramMatrix = CommonElements.emptyElement("PPMatrix");
             paramMatrix.addChildren(parameters);
+
+            PMMLElement covariate = CommonElements.emptyElement("PPMatrix");
+
+            PMMLElement factors =
+                    new PMMLElement("FactorList", new HashMap<>(), new ArrayList<>(), true);
+
+            generalRegressionModel.addChild(factors);
+            generalRegressionModel.addChild(covariate);
+            generalRegressionModel.addChild(ppMatrix);
             generalRegressionModel.addChild(paramMatrix);
+            modelRoot.addChild(generalRegressionModel);
             modelRoot.writeToFile("LogisticRegression" + workid);
             workid++;
         }
@@ -105,6 +133,27 @@ public class LogisticRegression implements Algorithm {
             elements.add(new PMMLElement("PCell", paramAttr, new ArrayList<>(), true));
         }
 
+        return elements;
+    }
+
+    private List<PMMLElement> getSubPPMatrix(List<PMMLElement> betas) {
+        List<PMMLElement> elements = new ArrayList<>();
+        for (PMMLElement beta : betas) {
+            String paramName = beta.firstNodeWithTag("id").content;
+            try {
+                paramName = "p" + (Integer.parseInt(paramName) - 5);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!paramName.equals("p0")) {
+                Map<String, String> paramAttr = new HashMap<>();
+                paramAttr.put("parameterName", paramName);
+                paramAttr.put("predictorName", "");
+                paramAttr.put("value", "1");
+                elements.add(new PMMLElement("PPCell", paramAttr, new ArrayList<>(), true));
+            }
+        }
+        elements.add(CommonElements.createNewComment("Change predictorName for convenience."));
         return elements;
     }
 

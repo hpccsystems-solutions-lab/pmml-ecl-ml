@@ -2,6 +2,7 @@ package com.hpccsystems.pmml2ecl.ecl.algorithms;
 
 import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
+import com.hpccsystems.pmml2ecl.pmml.operations.CommonElements;
 import com.hpccsystems.pmml2ecl.pmml.operations.ElementFinder;
 
 import java.util.ArrayList;
@@ -59,7 +60,9 @@ public class LinearRegression implements Algorithm {
             coefficients.add(new PMMLElement("NumericPredictor", attribs2, null, true));
         }
 
+        fields.add(CommonElements.createNewComment("Note that MiningSchema names MUST correspond to NumericPredictor names."));
         PMMLElement schema = new PMMLElement("MiningSchema", new HashMap<>(), fields, false);
+
         Map<String, String> tableAttr = new HashMap<>();
         tableAttr.put("intercept", intercept);
         PMMLElement table = new PMMLElement("RegressionTable", tableAttr, coefficients, false);
