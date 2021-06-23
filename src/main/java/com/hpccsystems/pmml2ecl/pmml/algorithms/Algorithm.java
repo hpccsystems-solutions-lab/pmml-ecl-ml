@@ -7,6 +7,6 @@ import java.util.LinkedList;
 
 public interface Algorithm {
 
-    LinkedList<ECLElement> getEclFromModel();
+    LinkedList<ECLElement> getEclFromModel() throws Exception;
 
 }

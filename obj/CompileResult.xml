@@ -28,7 +28,31 @@
  <Row><wi>1</wi><id>8</id><number>1</number><value>-9.598161738533577</value></Row>
  <Row><wi>1</wi><id>9</id><number>1</number><value>9.210681774924732</value></Row>
  <Row><wi>1</wi><id>10</id><number>1</number><value>25.30531102184722</value></Row>
+ <Row><wi>1</wi><id>1</id><number>1</number><value>4.0</value></Row>
  <Row><wi>1</wi><id>11</id><number>1</number><value>20.72226041832065</value></Row>
+ <Row><wi>1</wi><id>2</id><number>1</number><value>2.956946229092019</value></Row>
+ <Row><wi>1</wi><id>3</id><number>1</number><value>9.0</value></Row>
+ <Row><wi>1</wi><id>4</id><number>1</number><value>0.0</value></Row>
+ <Row><wi>1</wi><id>1</id><number>2</number><value>4.0</value></Row>
+ <Row><wi>1</wi><id>2</id><number>2</number><value>2.956946229091956</value></Row>
+ <Row><wi>1</wi><id>3</id><number>2</number><value>9.0</value></Row>
+ <Row><wi>1</wi><id>4</id><number>2</number><value>0.0</value></Row>
+ <Row><wi>2</wi><id>1</id><number>1</number><value>4.0</value></Row>
+ <Row><wi>2</wi><id>2</id><number>1</number><value>7.611031443038627</value></Row>
+ <Row><wi>2</wi><id>3</id><number>1</number><value>9.0</value></Row>
+ <Row><wi>2</wi><id>4</id><number>1</number><value>0.0</value></Row>
+ <Row><wi>2</wi><id>1</id><number>2</number><value>4.0</value></Row>
+ <Row><wi>2</wi><id>2</id><number>2</number><value>7.562011885712412</value></Row>
+ <Row><wi>2</wi><id>3</id><number>2</number><value>9.0</value></Row>
+ <Row><wi>2</wi><id>4</id><number>2</number><value>0.0</value></Row>
+ <Row><wi>2</wi><id>1</id><number>3</number><value>4.0</value></Row>
+ <Row><wi>2</wi><id>2</id><number>3</number><value>0.04043498888134422</value></Row>
+ <Row><wi>2</wi><id>3</id><number>3</number><value>6.0</value></Row>
+ <Row><wi>2</wi><id>4</id><number>3</number><value>3.0</value></Row>
+ <Row><wi>3</wi><id>1</id><number>1</number><value>4.0</value></Row>
+ <Row><wi>3</wi><id>2</id><number>1</number><value>3.348683043637813</value></Row>
+ <Row><wi>3</wi><id>3</id><number>1</number><value>9.0</value></Row>
+ <Row><wi>3</wi><id>4</id><number>1</number><value>0.0</value></Row>
  <Row><wi>1</wi><id>12</id><number>1</number><value>15.83604509141883</value></Row>
  <Row><wi>1</wi><id>5</id><number>2</number><value>-12.6610029900526</value></Row>
  <Row><wi>1</wi><id>6</id><number>2</number><value>9.140426094131882</value></Row>
@@ -39,28 +63,17 @@
  <Row><wi>1</wi><id>11</id><number>2</number><value>20.72226041832057</value></Row>
  <Row><wi>1</wi><id>12</id><number>2</number><value>15.83604509141858</value></Row>
  <Row><wi>2</wi><id>5</id><number>1</number><value>10.58627999885276</value></Row>
- <Row><wi>1</wi><id>1</id><number>1</number><value>4.0</value></Row>
  <Row><wi>2</wi><id>6</id><number>1</number><value>-30.34715120254396</value></Row>
- <Row><wi>1</wi><id>2</id><number>1</number><value>2.956946229092019</value></Row>
- <Row><wi>1</wi><id>3</id><number>1</number><value>9.0</value></Row>
  <Row><wi>2</wi><id>7</id><number>1</number><value>10.23082262976946</value></Row>
- <Row><wi>1</wi><id>4</id><number>1</number><value>0.0</value></Row>
  <Row><wi>2</wi><id>8</id><number>1</number><value>-3.277464847545872</value></Row>
  <Row><wi>2</wi><id>9</id><number>1</number><value>7.306395511435864</value></Row>
- <Row><wi>1</wi><id>1</id><number>2</number><value>4.0</value></Row>
  <Row><wi>2</wi><id>10</id><number>1</number><value>27.91666596154092</value></Row>
- <Row><wi>1</wi><id>2</id><number>2</number><value>2.956946229091956</value></Row>
  <Row><wi>2</wi><id>11</id><number>1</number><value>16.85857280013325</value></Row>
- <Row><wi>1</wi><id>3</id><number>2</number><value>9.0</value></Row>
- <Row><wi>1</wi><id>4</id><number>2</number><value>0.0</value></Row>
  <Row><wi>2</wi><id>12</id><number>1</number><value>24.54060938148552</value></Row>
- <Row><wi>2</wi><id>1</id><number>1</number><value>4.0</value></Row>
  <Row><wi>2</wi><id>5</id><number>2</number><value>-24.63407428632722</value></Row>
  <Row><wi>2</wi><id>6</id><number>2</number><value>15.79140238258775</value></Row>
- <Row><wi>2</wi><id>2</id><number>1</number><value>7.611031443038627</value></Row>
  <Row><wi>2</wi><id>7</id><number>2</number><value>13.94981897592563</value></Row>
  <Row><wi>2</wi><id>8</id><number>2</number><value>7.24941402387567</value></Row>
- <Row><wi>2</wi><id>3</id><number>1</number><value>9.0</value></Row>
  <Row><wi>2</wi><id>9</id><number>2</number><value>11.10237516433617</value></Row>
  <Row><wi>2</wi><id>10</id><number>2</number><value>20.88900581389284</value></Row>
  <Row><wi>2</wi><id>11</id><number>2</number><value>25.99647273627465</value></Row>
@@ -81,18 +94,5 @@
  <Row><wi>3</wi><id>10</id><number>1</number><value>29.33332877203639</value></Row>
  <Row><wi>3</wi><id>11</id><number>1</number><value>22.6496285759351</value></Row>
  <Row><wi>3</wi><id>12</id><number>1</number><value>23.73852485387309</value></Row>
- <Row><wi>2</wi><id>4</id><number>1</number><value>0.0</value></Row>
- <Row><wi>2</wi><id>1</id><number>2</number><value>4.0</value></Row>
- <Row><wi>2</wi><id>2</id><number>2</number><value>7.562011885712412</value></Row>
- <Row><wi>2</wi><id>3</id><number>2</number><value>9.0</value></Row>
- <Row><wi>2</wi><id>4</id><number>2</number><value>0.0</value></Row>
- <Row><wi>2</wi><id>1</id><number>3</number><value>4.0</value></Row>
- <Row><wi>2</wi><id>2</id><number>3</number><value>0.04043498888134422</value></Row>
- <Row><wi>2</wi><id>3</id><number>3</number><value>6.0</value></Row>
- <Row><wi>2</wi><id>4</id><number>3</number><value>3.0</value></Row>
- <Row><wi>3</wi><id>1</id><number>1</number><value>4.0</value></Row>
- <Row><wi>3</wi><id>2</id><number>1</number><value>3.348683043637813</value></Row>
- <Row><wi>3</wi><id>3</id><number>1</number><value>9.0</value></Row>
- <Row><wi>3</wi><id>4</id><number>1</number><value>0.0</value></Row>
 </Dataset>
 </Result>

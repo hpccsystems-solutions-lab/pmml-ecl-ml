@@ -15,4 +15,8 @@ public class CommonElements {
         return new PMMLElement(tag, new HashMap<>(), new ArrayList<>(), false);
     }
 
+    public static PMMLElement emptySelfClosedElement(String tag) {
+        return new PMMLElement(tag, new HashMap<>(), new ArrayList<>(), true);
+    }
+
 }

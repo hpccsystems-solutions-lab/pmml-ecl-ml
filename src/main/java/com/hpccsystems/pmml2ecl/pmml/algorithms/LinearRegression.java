@@ -17,23 +17,24 @@ public class LinearRegression implements Algorithm {
         this.model = model;
     }
 
-    public LinkedList<ECLElement> getEclFromModel() {
+    @Override
+    public LinkedList<ECLElement> getEclFromModel() throws Exception {
         LinkedList<ECLElement> modelECL = new LinkedList<>();
         PMMLElement schema = model.firstNodeWithTag("MiningSchema");
         PMMLElement table = model.firstNodeWithTag("RegressionTable");
+        if (table == null) {
+            table = model.firstNodeWithTag("GeneralRegressionTable");
+        }
 
         modelECL.add(new ECLElement("IMPORT LinearRegression as LR;"));
         String finalElement = "model := DATASET([";
 
-        //
         List<String> dataPoints;
         if (table.attributes.containsKey("intercept")) {
             dataPoints = getFromInterceptTable(schema, table);
         } else {
             dataPoints = getFromSequentialTable(schema, table);
         }
-
-        //
 
         finalElement += String.join(",\n    ", dataPoints.subList(0, dataPoints.size() - 1)) + "], Types.Layout_Model);\n";
         modelECL.add(new ECLElement(finalElement));

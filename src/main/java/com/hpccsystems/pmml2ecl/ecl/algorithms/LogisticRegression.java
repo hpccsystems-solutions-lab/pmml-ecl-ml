@@ -84,26 +84,28 @@ public class LogisticRegression implements Algorithm {
                 depnom++;
             }
 
-            PMMLElement dataDict = CommonElements.emptyElement("DataDictionary");
-            Map<String, String> dataAttr = new HashMap<>();
-            dataAttr.put("dataType", "string");
-            dataAttr.put("name", "class");
-            dataAttr.put("optype", "categorical");
-            PMMLElement dataCategories = new PMMLElement("DataField", dataAttr, categories, false);
-            dataDict.addChild(dataCategories);
-            modelRoot.addChild(dataDict);
+            //TODO: Add support for a DataDictionary.
+//            PMMLElement dataDict = CommonElements.emptyElement("DataDictionary");
+//            Map<String, String> dataAttr = new HashMap<>();
+//            dataAttr.put("dataType", "string");
+//            dataAttr.put("name", "class");
+//            dataAttr.put("optype", "categorical");
+//            PMMLElement dataCategories = new PMMLElement("DataField", dataAttr, categories, false);
+//            dataDict.addChild(dataCategories);
+//            modelRoot.addChild(dataDict);
 
             PMMLElement ppMatrix = CommonElements.emptyElement("PPMatrix");
             ppMatrix.addChildren(pps);
 
-            PMMLElement paramMatrix = CommonElements.emptyElement("PPMatrix");
+            PMMLElement paramMatrix = CommonElements.emptyElement("ParamMatrix");
             paramMatrix.addChildren(parameters);
 
-            PMMLElement covariate = CommonElements.emptyElement("PPMatrix");
+            PMMLElement covariate = CommonElements.emptySelfClosedElement("CovariateList");
 
             PMMLElement factors =
                     new PMMLElement("FactorList", new HashMap<>(), new ArrayList<>(), true);
 
+            //TODO: Add Mining Schema
             generalRegressionModel.addChild(factors);
             generalRegressionModel.addChild(covariate);
             generalRegressionModel.addChild(ppMatrix);

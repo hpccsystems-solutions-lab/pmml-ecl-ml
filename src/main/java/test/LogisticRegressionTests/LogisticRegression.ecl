@@ -61,7 +61,7 @@ observations := DATASET(
      {3, 9, 1, .4}, {3, 9, 2, .7}, {3, 9, 3, .3}], Types.NumericField);
 
 testData := DATASET([
-    {1, 1, 1, 9.2},
+    {1, 1, 1, .2},
     {1, 1, 2, .87}], Types.NumericField);
 
 

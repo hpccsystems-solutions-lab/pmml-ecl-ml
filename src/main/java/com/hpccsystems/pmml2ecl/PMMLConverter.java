@@ -25,7 +25,7 @@ public class PMMLConverter {
     public PMMLConverter(String absoluteFilePath) throws Exception {
         PMMLParser parser = new PMMLParser(absoluteFilePath);
         PMMLElement root = parser.getRoot();
-        PMMLElement model = root.firstNodeWithTag("RegressionModel");
+        PMMLElement model = root.firstNodeWithKey("algorithmName");
         String functionName = model.getValue("algorithmName");
         ecl = new LinkedList<>();
         ecl.add(new ECLElement("IMPORT ML_Core;"));
