@@ -12,8 +12,8 @@ public class ParserTester {
     public static void main(String[] args) throws Exception {
 //        endToEndECLLinearRegression();
 //        endToEndPMMLLinearRegression();
-//        logisticRegressionECL();
-        logisticRegressionPMML();
+        logisticRegressionECL();
+//        logisticRegressionPMML();
     }
 
     static void testPMMLParser() throws Exception {

@@ -124,8 +124,7 @@ public class ECLCompiler {
         }
         writeResultToFile(errorText, "CompileErrors.txt");
         String result = "";
-        try
-        {
+        try {
             in = p.getInputStream();
             br = new BufferedReader(new InputStreamReader(in));
             String lineErr;
@@ -133,15 +132,11 @@ public class ECLCompiler {
             {
                 result += lineErr + "\r\n";
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Error reading compile errors:"
                     + e.getMessage());
-        }
-        finally
-        {
+        } finally {
             try
             {
                 if (br != null)
@@ -191,8 +186,9 @@ public class ECLCompiler {
     }
 
     private static void writeResultToFile(String result, String fileName) throws Exception {
+        File directory = new File(System.getProperty("user.dir") + "/obj");
         File file = new File(System.getProperty("user.dir") + "/obj/" + fileName);
-        //TODO: check for folder
+        directory.mkdirs();
         if (!file.exists()) {
             file.createNewFile();
         }

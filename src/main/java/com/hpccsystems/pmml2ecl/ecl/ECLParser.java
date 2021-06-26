@@ -74,8 +74,9 @@ public class ECLParser {
      * @throws Exception
      */
     public static void writeToFile(LinkedList<ECLElement> eclElements) throws Exception {
+        File directory = new File(System.getProperty("user.dir") + "/output");
         File file = new File(System.getProperty("user.dir") + "/output/ECLOutput.ecl");
-        //TODO: check for folder
+        directory.mkdirs();
         if (!file.exists()) {
             file.createNewFile();
         }

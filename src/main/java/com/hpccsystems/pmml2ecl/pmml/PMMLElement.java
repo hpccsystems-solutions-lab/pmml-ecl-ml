@@ -295,6 +295,28 @@ public class PMMLElement extends Node {
     }
 
     /**
+     * Writes the current PMMLElement to /output/PMMLOutput.xml
+     * @throws Exception
+     */
+    public void writeToFile(String directory, String fileName) throws Exception {
+        File outputDir = new File(System.getProperty("user.dir") + "/output");
+        outputDir.mkdirs();
+        File file;
+        if (!directory.endsWith("/"))
+            file = new File(directory + "/" + fileName);
+        else
+            file = new File(directory + fileName);
+        //TODO: check for folder
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(this.toString());
+        bw.close();
+    }
+
+    /**
      * Overriden method that doesn't allow for self closing tags to have children
      */
     @Override

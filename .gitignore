@@ -6,3 +6,4 @@ pmml-ecl-ml.iml
 target/
 target/generated-sources/
 output/
+obj/
