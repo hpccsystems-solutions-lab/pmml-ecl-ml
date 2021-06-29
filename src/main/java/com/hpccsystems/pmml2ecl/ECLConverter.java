@@ -28,4 +28,19 @@ public class ECLConverter {
         }
     }
 
+    public ECLConverter(String absoluteFilePath, String outputPath) throws Exception {
+        try {
+            new ECLCompiler(absoluteFilePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Compiling ECL at " + absoluteFilePath +  " failed.");
+        }
+        try {
+            new ECLParser(currDir + "/obj/CompileResult.xml", outputPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Could not parse result XML file.");
+        }
+    }
+
 }

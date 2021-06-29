@@ -1,10 +1,6 @@
 package com.hpccsystems.pmml2ecl;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-
-import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
@@ -42,6 +38,29 @@ public class PMMLConverter {
                 break;
         }
         ECLParser.writeToFile(ecl);
+    }
+
+    public PMMLConverter(String absoluteFilePath, String outputPath) throws Exception {
+        PMMLParser parser = new PMMLParser(absoluteFilePath);
+        PMMLElement root = parser.getRoot();
+        PMMLElement model = root.firstNodeWithKey("algorithmName");
+        String functionName = model.getValue("algorithmName");
+        ecl = new LinkedList<>();
+        ecl.add(new ECLElement("IMPORT ML_Core;"));
+        ecl.add(new ECLElement("IMPORT ML_Core.Types;"));
+        ecl.add(new ECLElement("IMPORT ML_Core.ModelOps2 as ModelOps2;"));
+        switch (functionName) {
+            case "LinearRegression":
+                ecl.addAll(new LinearRegression(model).getEclFromModel());
+                break;
+            case "LogisticRegression":
+                ecl.addAll(new LogisticRegression(model).getEclFromModel());
+                break;
+            default:
+                ecl.add(new ECLElement("OUTPUT('Unable to parse stored model.');"));
+                break;
+        }
+        ECLParser.writeToFile(ecl, outputPath);
     }
 
 }

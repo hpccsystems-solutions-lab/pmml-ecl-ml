@@ -280,11 +280,10 @@ public class PMMLElement extends Node {
      * Writes the current PMMLElement to /output/PMMLOutput.xml
      * @throws Exception
      */
-    public void writeToFile(String identifier) throws Exception {
+    public void writeToFile(String identifier, int number) throws Exception {
         File outputDir = new File(System.getProperty("user.dir") + "/output");
         outputDir.mkdirs();
-        File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput-" + identifier.trim() + ".xml");
-        //TODO: check for folder
+        File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput-" + identifier.trim() + number + ".xml");
         if (!file.exists()) {
             file.createNewFile();
         }
@@ -298,15 +297,11 @@ public class PMMLElement extends Node {
      * Writes the current PMMLElement to /output/PMMLOutput.xml
      * @throws Exception
      */
-    public void writeToFile(String directory, String fileName) throws Exception {
-        File outputDir = new File(System.getProperty("user.dir") + "/output");
+    public void writeToFile(String absoluteFilePath) throws Exception {
+        String direct = absoluteFilePath.substring(0, absoluteFilePath.lastIndexOf("/"));
+        File outputDir = new File(direct);
         outputDir.mkdirs();
-        File file;
-        if (!directory.endsWith("/"))
-            file = new File(directory + "/" + fileName);
-        else
-            file = new File(directory + fileName);
-        //TODO: check for folder
+        File file = new File(absoluteFilePath);
         if (!file.exists()) {
             file.createNewFile();
         }

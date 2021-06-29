@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class LogisticRegressionTests {
 
-    static String testDirectory = System.getProperty("user.dir") + "/output/test";
+    static String testDirectory = System.getProperty("user.dir") + "/src/main/java/test/LinearRegressionTests/output";
     static String outputDirectory = System.getProperty("user.dir") + "/output";
 
     @Test
@@ -61,7 +61,6 @@ public class LogisticRegressionTests {
         CommonTestOperations.writeToFile(testDirectory + "/SingleLinearRegressionTest.ecl", file);
 
         new ECLConverter(testDirectory + "/SingleLinearRegressionTest.ecl");
-
         new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression1.xml");
 
         //Do inspection of files to see if the values match up.
@@ -79,8 +78,9 @@ public class LogisticRegressionTests {
         CommonTestOperations.writeToFile(testDirectory + "/MultipleLinearRegressionTest.ecl", file);
 
         new ECLConverter(testDirectory + "/MultipleLinearRegressionTest.ecl");
-        new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression1.xml");
-
+        for (int i = 1; i < listOfCoefficients.size() + 1; i++) {
+            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + i + ".xml", Integer.toString(i));
+        }
     }
 
     @Test
@@ -96,6 +96,9 @@ public class LogisticRegressionTests {
         CommonTestOperations.writeToFile(testDirectory + "/MultipleWILinearRegressionTest.ecl", file);
 
         new ECLConverter(testDirectory + "/MultipleWILinearRegressionTest.ecl");
+        for (int i = 1; i < listOfCoefficients.size() + 1; i++) {
+            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + i + ".xml", Integer.toString(i));
+        }
     }
 
     @Test
@@ -123,6 +126,10 @@ public class LogisticRegressionTests {
         CommonTestOperations.writeToFile(testDirectory + "/UndeterminedMultipleWILinearRegressionTest.ecl", file);
 
         new ECLConverter(testDirectory + "/UndeterminedMultipleWILinearRegressionTest.ecl");
+        for (int i = 0; i < numArrays; i++) {
+            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + (i + 1) + ".xml", Integer.toString(i + 1));
+        }
+        //At this point, you must check it manually using the output in the terminal and the files.
     }
 
     /*
@@ -176,6 +183,13 @@ public class LogisticRegressionTests {
             counter++;
         } while (pmmlFile.delete());
         assertFalse(new File(outputDirectory + "/PMMLOutput-LinearRegression1.xml").exists());
+        counter = 1;
+        File eclFile;
+        do {
+            eclFile = new File(outputDirectory + "/ECLOutput" + counter + ".ecl");
+            counter++;
+        } while (eclFile.delete());
+        assertFalse(new File(outputDirectory + "/ECLOutput1.ecl").exists());
     }
 
     private Double[] fillCoefficients(int numCoef) {
@@ -189,7 +203,7 @@ public class LogisticRegressionTests {
 
     private void printCoefficients(Double[] coefficients) {
         for (int i = 0; i < coefficients.length; i++) {
-            System.out.println("x" + (i + 1) + " - " + coefficients[i]);
+            System.out.println("x" + (i + 1) + ": " + coefficients[i]);
         }
     }
 

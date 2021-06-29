@@ -4,6 +4,7 @@ import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 import com.hpccsystems.pmml2ecl.pmml.operations.CommonElements;
 import com.hpccsystems.pmml2ecl.pmml.operations.ElementFinder;
+import com.hpccsystems.pmml2ecl.pmml.operations.FileNames;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +28,22 @@ public class LinearRegression implements Algorithm {
         int workid = 1;
         while (ElementFinder.hasElementWithTagContent(elements, "wi", Integer.toString(workid))) {
             getFile(ElementFinder.getAllWhereHasTagContent(elements, "wi", Integer.toString(workid)))
-                    .writeToFile("LinearRegression" + workid);
+                    .writeToFile("LinearRegression", workid);
+            workid++;
+        }
+    }
+
+    @Override
+    public void writeStoredModel(String absoluteFilePath) throws Exception {
+        //Find final .xml and insert number right before it.
+        List<PMMLElement> elements = new ArrayList<>();
+        for (Node n : rootModel.childNodes) {
+            elements.add((PMMLElement) n);
+        }
+        int workid = 1;
+        while (ElementFinder.hasElementWithTagContent(elements, "wi", Integer.toString(workid))) {
+            getFile(ElementFinder.getAllWhereHasTagContent(elements, "wi", Integer.toString(workid)))
+                    .writeToFile(FileNames.insertNumberToFilePath(absoluteFilePath, workid));
             workid++;
         }
     }
