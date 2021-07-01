@@ -4,16 +4,16 @@ import com.hpccsystems.pmml2ecl.ECLConverter;
 import com.hpccsystems.pmml2ecl.PMMLConverter;
 import com.hpccsystems.pmml2ecl.ecl.ECLCompiler;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
-import org.junit.Test;
 import test.CommonTestOperations;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class LogisticRegressionTests {
+public class LinearRegressionTests {
 
     static String testDirectory = System.getProperty("user.dir") + "/src/main/java/test/LinearRegressionTests/output";
     static String outputDirectory = System.getProperty("user.dir") + "/output";

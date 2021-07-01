@@ -5,11 +5,9 @@ import java.util.regex.Pattern;
 public class Converter {
 
     public static void main(String[] args) throws Exception {
-
         if (args.length < 1) {
             throw new Exception("Parameters not defined.");
         }
-
         Pattern acceptablePMMLEndings = Pattern.compile("(\\.(xml|pmml))$", Pattern.CASE_INSENSITIVE);
         Pattern acceptableECLEndings = Pattern.compile("(\\.(ecl))$", Pattern.CASE_INSENSITIVE);
         if (acceptablePMMLEndings.matcher(args[0]).find()) {
@@ -29,10 +27,6 @@ public class Converter {
                 throw new Exception("Too many files were given or file extensions not accepted.");
             }
         }
-
-        //You're given an ECL file and no output.
-
-        //You're given an ECL file and an output.
     }
 
 }

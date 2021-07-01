@@ -5,6 +5,7 @@ import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 import com.hpccsystems.pmml2ecl.pmml.operations.CommonElements;
 import com.hpccsystems.pmml2ecl.pmml.operations.ElementFinder;
 import com.hpccsystems.pmml2ecl.pmml.operations.FileNames;
+import test.CommonTestOperations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,104 +22,15 @@ public class LogisticRegression implements Algorithm {
 
     @Override
     public void writeStoredModel() throws Exception {
-        PMMLElement model = rootECL.firstNodeWithTag("Dataset");
-
-        List<PMMLElement> rows = new ArrayList<>();
-
-        //Getting all the rows that correspond to
-        for (Node node : model.childNodes) {
-            PMMLElement idNode = ((PMMLElement) node).firstNodeWithTag("id");
-            if (idNode != null) {
-                try {
-                    Integer value = Integer.parseInt(idNode.content);
-                    if (value >= 5) {
-                        rows.add((PMMLElement) node);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        int workid = 1;
-        while (ElementFinder.hasElementWithTagContent(rows, "wi", Integer.toString(workid))) {
-            List<PMMLElement> allBetasAndSE =
-                    ElementFinder.getAllWhereHasTagContent(rows, "wi", Integer.toString(workid));
-            int allSize = allBetasAndSE.size();
-            if (allSize % 2 > 0) {
-                System.out.println("Something went wrong. Betas and SE not even.");
-                workid++;
-                continue;
-            }
-            PMMLElement modelRoot = new PMMLElement("PMML",
-                    "version=\"4.4\" xmlns=\"http://www.dmg.org/PMML-4_4\"", "", false);
-
-            PMMLElement header = new PMMLElement("Header", "", "", true);
-            modelRoot.addChild(header);
-
-            Map<String, String> modelAttr = new HashMap<>();
-            modelAttr.put("functionName", "classification");
-            modelAttr.put("algorithmName", "LogisticRegression");
-            PMMLElement generalRegressionModel =
-                    new PMMLElement("GeneralRegressionModel", modelAttr, new ArrayList<>(), false);
-
-            int depnom = 1;
-            List<Node> parameters = new ArrayList<>();
-            List<Node> pps = new ArrayList<>();
-            List<Node> categories = new ArrayList<>();
-            while (ElementFinder.hasElementWithTagContent(allBetasAndSE, "number", Integer.toString(depnom))) {
-                List<PMMLElement> betasWithDep =
-                        ElementFinder.getAllWhereHasTagContent(allBetasAndSE, "number", Integer.toString(depnom));
-                int depSize = betasWithDep.size();
-                if (depSize % 2 > 0) {
-                    System.out.println("Something went wrong. Number of rows in dependent column not even.");
-                    depnom++;
-                    continue;
-                }
-                List<PMMLElement> betas =
-                        ElementFinder.getAllWhereHasTagInRange(betasWithDep, "id", 5, 5 + depSize / 2);
-                parameters.addAll(getSubParamMatrix(betas));
-                if (depnom == 1) pps.addAll(getSubPPMatrix(betas));
-                Map<String, String> catAttr = new HashMap<>();
-                catAttr.put("value", Integer.toString(depnom));
-                categories.add(new PMMLElement("Value", catAttr, new ArrayList<>(), true));
-                depnom++;
-            }
-
-            //TODO: Add support for a DataDictionary.
-//            PMMLElement dataDict = CommonElements.emptyElement("DataDictionary");
-//            Map<String, String> dataAttr = new HashMap<>();
-//            dataAttr.put("dataType", "string");
-//            dataAttr.put("name", "class");
-//            dataAttr.put("optype", "categorical");
-//            PMMLElement dataCategories = new PMMLElement("DataField", dataAttr, categories, false);
-//            dataDict.addChild(dataCategories);
-//            modelRoot.addChild(dataDict);
-
-            PMMLElement ppMatrix = CommonElements.emptyElement("PPMatrix");
-            ppMatrix.addChildren(pps);
-
-            PMMLElement paramMatrix = CommonElements.emptyElement("ParamMatrix");
-            paramMatrix.addChildren(parameters);
-
-            PMMLElement covariate = CommonElements.emptySelfClosedElement("CovariateList");
-
-            PMMLElement factors =
-                    new PMMLElement("FactorList", new HashMap<>(), new ArrayList<>(), true);
-
-            //TODO: Add Mining Schema
-            generalRegressionModel.addChild(factors);
-            generalRegressionModel.addChild(covariate);
-            generalRegressionModel.addChild(ppMatrix);
-            generalRegressionModel.addChild(paramMatrix);
-            modelRoot.addChild(generalRegressionModel);
-            modelRoot.writeToFile("LogisticRegression", workid);
-            workid++;
-        }
+        internalGetAndWrite(null);
     }
 
     @Override
     public void writeStoredModel(String absoluteFilePath) throws Exception {
+        internalGetAndWrite(absoluteFilePath);
+    }
+
+    private void internalGetAndWrite(String filePath) throws Exception {
         PMMLElement model = rootECL.firstNodeWithTag("Dataset");
 
         List<PMMLElement> rows = new ArrayList<>();
@@ -164,6 +76,7 @@ public class LogisticRegression implements Algorithm {
             List<Node> parameters = new ArrayList<>();
             List<Node> pps = new ArrayList<>();
             List<Node> categories = new ArrayList<>();
+            List<Node> miningMatrix = new ArrayList<>();
             while (ElementFinder.hasElementWithTagContent(allBetasAndSE, "number", Integer.toString(depnom))) {
                 List<PMMLElement> betasWithDep =
                         ElementFinder.getAllWhereHasTagContent(allBetasAndSE, "number", Integer.toString(depnom));
@@ -177,6 +90,7 @@ public class LogisticRegression implements Algorithm {
                         ElementFinder.getAllWhereHasTagInRange(betasWithDep, "id", 5, 5 + depSize / 2);
                 parameters.addAll(getSubParamMatrix(betas));
                 if (depnom == 1) pps.addAll(getSubPPMatrix(betas));
+                miningMatrix.addAll(getMiningSchemaMatrix(betas));
                 Map<String, String> catAttr = new HashMap<>();
                 catAttr.put("value", Integer.toString(depnom));
                 categories.add(new PMMLElement("Value", catAttr, new ArrayList<>(), true));
@@ -184,14 +98,19 @@ public class LogisticRegression implements Algorithm {
             }
 
             //TODO: Add support for a DataDictionary.
-//            PMMLElement dataDict = CommonElements.emptyElement("DataDictionary");
+            PMMLElement dataDict = CommonElements.emptyElement("DataDictionary");
+            dataDict.addChild(CommonElements.createNewComment("Feel free to add DataFields and definitions here."));
 //            Map<String, String> dataAttr = new HashMap<>();
 //            dataAttr.put("dataType", "string");
 //            dataAttr.put("name", "class");
 //            dataAttr.put("optype", "categorical");
 //            PMMLElement dataCategories = new PMMLElement("DataField", dataAttr, categories, false);
 //            dataDict.addChild(dataCategories);
-//            modelRoot.addChild(dataDict);
+            modelRoot.addChild(dataDict);
+
+
+            PMMLElement miningSchema = CommonElements.emptyElement("MiningSchema");
+            miningSchema.addChildren(miningMatrix);
 
             PMMLElement ppMatrix = CommonElements.emptyElement("PPMatrix");
             ppMatrix.addChildren(pps);
@@ -204,15 +123,42 @@ public class LogisticRegression implements Algorithm {
             PMMLElement factors =
                     new PMMLElement("FactorList", new HashMap<>(), new ArrayList<>(), true);
 
-            //TODO: Add Mining Schema
+            generalRegressionModel.addChild(miningSchema);
             generalRegressionModel.addChild(factors);
             generalRegressionModel.addChild(covariate);
             generalRegressionModel.addChild(ppMatrix);
             generalRegressionModel.addChild(paramMatrix);
             modelRoot.addChild(generalRegressionModel);
-            modelRoot.writeToFile(FileNames.insertNumberToFilePath(absoluteFilePath, workid));
+            if (filePath != null) {
+                modelRoot.writeToFile(FileNames.insertNumberToFilePath(filePath, workid));
+            } else {
+                modelRoot.writeToFile("LogisticRegression", workid);
+            }
             workid++;
         }
+    }
+
+    private List<PMMLElement> getMiningSchemaMatrix(List<PMMLElement> betas) {
+        List<PMMLElement> elements = new ArrayList<>();
+        for (PMMLElement beta : betas) {
+            String paramName = beta.firstNodeWithTag("id").content;
+            try {
+                paramName = "p" + (Integer.parseInt(paramName) - 5);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!paramName.equals("p0")) {
+                Map<String, String> paramAttr = new HashMap<>();
+                paramAttr.put("name", paramName);
+                elements.add(new PMMLElement("MiningField", paramAttr, new ArrayList<>(), true));
+            }
+        }
+        Map<String, String> paramAttr = new HashMap<>();
+        paramAttr.put("name", "predictedClass");
+        paramAttr.put("usageType", "predicted");
+        elements.add(new PMMLElement("MiningField", paramAttr, new ArrayList<>(), true));
+        elements.add(CommonElements.createNewComment("Change name for convenience. MiningSchema is not used by PMML2ECL."));
+        return elements;
     }
 
     private List<PMMLElement> getSubParamMatrix(List<PMMLElement> betas) {
