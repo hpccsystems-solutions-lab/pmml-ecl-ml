@@ -3,7 +3,7 @@
   "server": "play.hpccsystems.com",
   "protocol": "http",
   "port": 8010,
-  "user": "aparra",
+  "user": "pmml2ecl",
   "password": "",
-  "jobName": "testRun"
+  "jobName": "pmml2eclConversion"
 }
