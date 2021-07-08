@@ -9,3 +9,7 @@ output/
 obj/
 out/
 META-INF/
+.classpath
+.factorypath
+.project
+.settings/

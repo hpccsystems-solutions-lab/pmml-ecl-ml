@@ -35,6 +35,11 @@ public class LogisticRegressionTests {
         new PMMLConverter(outputDirectory + "/PMMLOutput-LogisticRegression1.xml");
     }
 
+    @Test
+    public void multipleLogisticRegression() throws Exception {
+        
+    }
+
     private Double[] fillCoefficients(int numCoef) {
         Random random = new Random();
         Double[] coef = new Double[numCoef];
