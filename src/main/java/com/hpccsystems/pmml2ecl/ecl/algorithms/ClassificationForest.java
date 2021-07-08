@@ -2,7 +2,9 @@ package com.hpccsystems.pmml2ecl.ecl.algorithms;
 
 import com.hpccsystems.pmml2ecl.Node;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
+import com.hpccsystems.pmml2ecl.pmml.operations.CommonElements;
 import com.hpccsystems.pmml2ecl.pmml.operations.ElementFinder;
+import com.hpccsystems.pmml2ecl.pmml.operations.FileNames;
 
 import java.util.*;
 
@@ -24,19 +26,18 @@ public class ClassificationForest implements Algorithm{
     @Override
     public void writeStoredModel(String absoluteFilePath) throws Exception {
         List<PMMLElement> storedModels = getStoredModels();
-        if (absoluteFilePath != null) {
-            for (PMMLElement model : storedModels) {
-                model.writeToFile(absoluteFilePath);
-            }
-        } else {
-
-        }
+        for (int i = 1; i < storedModels.size() + 1; i++)
+            if (absoluteFilePath != null)
+                storedModels.get(i - 1).writeToFile(FileNames.insertNumberToFilePath(absoluteFilePath, i));
+            else
+                storedModels.get(i - 1).writeToFile("ClassificationForest", i);
     }
 
     private List<PMMLElement> getStoredModels() {
         PMMLElement model = rootECL.firstNodeWithKey("Dataset");
 
         List<PMMLElement> elementsToWorkOn = new ArrayList<>();
+        List<PMMLElement> finalModels = new ArrayList<>();
 
         for (Node n : model.childNodes) {
             elementsToWorkOn.add((PMMLElement) n);
@@ -46,11 +47,11 @@ public class ClassificationForest implements Algorithm{
         while (ElementFinder.hasElementWithTagContent(elementsToWorkOn, "wi", Integer.toString(counter))) {
             List<PMMLElement> wiElements =
                     ElementFinder.getAllWhereHasTagContent(elementsToWorkOn, "wi", Integer.toString(counter));
+            List<PMMLElement> relevantElements = getAllWithSpecificIndexItem(wiElements, 0, "2");
+            finalModels.add(getTreeFromElements(wiElements));
         }
 
-        finalModel.addChild(treeModel);
-
-        return finalModel;
+        return finalModels;
     }
 
     private PMMLElement getTreeFromElements(List<PMMLElement> elementsToWorkOn) {
@@ -64,6 +65,30 @@ public class ClassificationForest implements Algorithm{
         treeParams.put("functionName", "classification");
         treeParams.put("algorithmName", "randomForest");
         PMMLElement treeModel = new PMMLElement("TreeModel", treeParams, new ArrayList<>(), false);
+
+        finalModel.addChild(treeModel);
+
+        //TODO: Iterate over elements and decide what to do with them.
+        Map<String, String> baseNodeAttr = new HashMap<>();
+        baseNodeAttr.put("id", "1");
+        PMMLElement baseNode = new PMMLElement("Node", baseNodeAttr, new ArrayList<>(), false);
+        baseNode.addChild(CommonElements.emptySelfClosedElement("True"));
+
+        treeModel.addChild(baseNode);
+
+        //TODO: Add children to Base Node. RECURSIVELY?
+
+        return finalModel;
+    }
+
+    private List<PMMLElement> getAllWithSpecificIndexItem(List<PMMLElement> elements, int itemNum, String value) {
+        List<PMMLElement> finalElems = new ArrayList<>();
+        for (PMMLElement elem : elements) {
+            PMMLElement indices = elem.firstNodeWithTag("indexes");
+            if (indices.childNodes.size() > itemNum && indices.childNodes.get(itemNum).content.equals(value))
+                finalElems.add(elem);
+        }
+        return finalElems;
     }
 
 }

@@ -8,8 +8,8 @@ errorProb := 0;
 wiCount := 1;
 numTrainingRecs := 1000;
 numTestRecs := 1000;
-numTrees := 1;
-numVarsPerTree := 0;
+numTrees := 2;
+numVarsPerTree := 3;
 
 // Return TRUE with probability p
 prob(REAL p) := FUNCTION
@@ -93,7 +93,8 @@ OUTPUT(mod, NAMED('Model'));
 
 //OUTPUT(mod, NAMED('Model'));
 tn0 := F.Model2Nodes(mod);
-OUTPUT(tn0);
+//OUTPUT(tn0);
+//OUTPUT(F.CompressModel(mod));
 tn := SORT(tn0, wi, treeId, level, nodeid, id, number, depend);
 //OUTPUT(tn, {wi, level, treeId, nodeId, parentId, isLeft, id, number, value, depend, support, isOrdinal},NAMED('Tree'));
 

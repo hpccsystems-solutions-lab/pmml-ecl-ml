@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import com.hpccsystems.pmml2ecl.ecl.algorithms.ClassificationForest;
 import com.hpccsystems.pmml2ecl.ecl.algorithms.LinearRegression;
 import com.hpccsystems.pmml2ecl.ecl.algorithms.LogisticRegression;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
@@ -77,6 +78,9 @@ public class ECLParser {
                 case "LogisticRegression":
                     new LogisticRegression(model).writeStoredModel();
                     break;
+                case "ClassificationForest":
+                    new ClassificationForest(model).writeStoredModel();
+                    break;
                 default:
                     throw new Exception("Model type not well defined or outputted correctly.");
             }
@@ -95,6 +99,9 @@ public class ECLParser {
                     break;
                 case "LogisticRegression":
                     new LogisticRegression(model).writeStoredModel(outputPath);
+                    break;
+                case "ClassificationForest":
+                    new ClassificationForest(model).writeStoredModel(outputPath);
                     break;
                 default:
                     throw new Exception("Model type not well defined or outputted correctly.");
