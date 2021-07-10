@@ -35,7 +35,10 @@ public class LinearRegression implements Algorithm {
 
     @Override
     public void writeStoredModel(String absoluteFilePath) throws Exception {
-        //Find final .xml and insert number right before it.
+        if (absoluteFilePath == null) {
+            writeStoredModel();
+            return;
+        }
         List<PMMLElement> elements = new ArrayList<>();
         for (Node n : rootModel.childNodes) {
             elements.add((PMMLElement) n);

@@ -14,6 +14,7 @@ public class ParserTester {
 //        endToEndPMMLLinearRegression();
         logisticRegressionECL();
 //        logisticRegressionPMML();
+//        classForest();
     }
 
     static void testPMMLParser() throws Exception {
@@ -35,6 +36,12 @@ public class ParserTester {
 
     static void logisticRegressionPMML() throws Exception {
         new PMMLConverter(currDir + "/src/main/java/test/LogisticRegressionTests/SimpleLogisticRegression.xml");
+    }
+
+    static void classForest() throws Exception {
+
+        String testDirectory = System.getProperty("user.dir") + "/src/main/java/test/RandomForestTests";
+        new ECLConverter(testDirectory + "/ClassificationForestSimple.ecl");
     }
 
 }

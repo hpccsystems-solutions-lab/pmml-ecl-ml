@@ -90,7 +90,7 @@ public class LogisticRegression implements Algorithm {
                         ElementFinder.getAllWhereHasTagInRange(betasWithDep, "id", 5, 5 + depSize / 2);
                 parameters.addAll(getSubParamMatrix(betas));
                 if (depnom == 1) pps.addAll(getSubPPMatrix(betas));
-                miningMatrix.addAll(getMiningSchemaMatrix(betas));
+                if (depnom == 1) miningMatrix.addAll(getMiningSchemaMatrix(betas));
                 Map<String, String> catAttr = new HashMap<>();
                 catAttr.put("value", Integer.toString(depnom));
                 categories.add(new PMMLElement("Value", catAttr, new ArrayList<>(), true));

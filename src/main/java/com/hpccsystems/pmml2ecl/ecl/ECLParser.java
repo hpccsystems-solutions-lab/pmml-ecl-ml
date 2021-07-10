@@ -68,46 +68,30 @@ public class ECLParser {
     }
 
     private void convertToPMML() throws Exception {
-        PMMLElement type = this.rootNode.firstNodeWithAttribute("name", "Result 1");
-        PMMLElement model = this.rootNode.firstNodeWithAttribute("name", "Result 2");
-        if (type != null && model != null) {
-            switch (type.childNodes.get(0).childNodes.get(0).content) {
-                case "LinearRegression":
-                    new LinearRegression(model).writeStoredModel();
-                    break;
-                case "LogisticRegression":
-                    new LogisticRegression(model).writeStoredModel();
-                    break;
-                case "ClassificationForest":
-                    new ClassificationForest(model).writeStoredModel();
-                    break;
-                default:
-                    throw new Exception("Model type not well defined or outputted correctly.");
-            }
-        } else {
-            throw new Exception("The model type or model was not defined properly or outputted in .ecl file.");
-        }
+        convertToPMML(null);
     }
 
     private void convertToPMML(String outputPath) throws Exception {
-        PMMLElement type = this.rootNode.firstNodeWithAttribute("name", "Result 1");
-        PMMLElement model = this.rootNode.firstNodeWithAttribute("name", "Result 2");
-        if (type != null && model != null) {
-            switch (type.childNodes.get(0).childNodes.get(0).content) {
-                case "LinearRegression":
-                    new LinearRegression(model).writeStoredModel(outputPath);
-                    break;
-                case "LogisticRegression":
-                    new LogisticRegression(model).writeStoredModel(outputPath);
-                    break;
-                case "ClassificationForest":
-                    new ClassificationForest(model).writeStoredModel(outputPath);
-                    break;
-                default:
-                    throw new Exception("Model type not well defined or outputted correctly.");
+        if (this.rootNode.childNodes.size() >= 2) {
+            PMMLElement type = this.rootNode.firstNodeWithAttribute("name", "Result 1");
+            PMMLElement model = this.rootNode.firstNodeWithAttribute("name", "Result 2");
+            if (type != null && model != null) {
+                switch (type.childNodes.get(0).childNodes.get(0).content) {
+                    case "LinearRegression":
+                        new LinearRegression(model).writeStoredModel(outputPath);
+                        break;
+                    case "LogisticRegression":
+                        new LogisticRegression(model).writeStoredModel(outputPath);
+                        break;
+                    case "ClassificationForest":
+                        new ClassificationForest(model).writeStoredModel(outputPath);
+                        break;
+                    default:
+                        throw new Exception("Model type not well defined or outputted correctly.");
+                }
+            } else {
+                throw new Exception("The model type or model was not defined properly or outputted in .ecl file.");
             }
-        } else {
-            throw new Exception("The model type or model was not defined properly or outputted in .ecl file.");
         }
     }
 

@@ -90,26 +90,31 @@ public class ECLCompiler {
 
         InputStream in = null;
         BufferedReader br = null;
-        try
-        {
+        try {
             in = p.getErrorStream();
             br = new BufferedReader(new InputStreamReader(in));
             String lineErr;
-            while ((lineErr = br.readLine()) != null)
-            {
-                errorText += lineErr + "\r\n";
+            while (true) {
+                System.out.print(".");
+                if (br.ready()) {
+                    lineErr = br.readLine();
+                    if (lineErr != null) {
+                        errorText += lineErr + "\r\n";
+                        System.out.println(lineErr);
+                    } else {
+                        break;
+                    }
+                } else {
+                    System.out.print("x");
+                    break;
+                }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Error reading compile errors:"
                     + e.getMessage());
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 if (br != null)
                 {
                     br.close();
@@ -118,9 +123,9 @@ public class ECLCompiler {
                 {
                     in.close();
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            catch (Exception ex)
-            {}
         }
         writeResultToFile(errorText, "CompileErrors.txt");
         String result = "";
@@ -128,8 +133,7 @@ public class ECLCompiler {
             in = p.getInputStream();
             br = new BufferedReader(new InputStreamReader(in));
             String lineErr;
-            while ((lineErr = br.readLine()) != null)
-            {
+            while ((lineErr = br.readLine()) != null) {
                 result += lineErr + "\r\n";
             }
         } catch (Exception e) {
@@ -137,8 +141,7 @@ public class ECLCompiler {
             throw new Exception("Error reading compile errors:"
                     + e.getMessage());
         } finally {
-            try
-            {
+            try {
                 if (br != null)
                 {
                     br.close();
@@ -147,9 +150,9 @@ public class ECLCompiler {
                 {
                     in.close();
                 }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            catch (Exception ex)
-            {}
         }
         writeResultToFile(result, "CompileResult.xml");
     }

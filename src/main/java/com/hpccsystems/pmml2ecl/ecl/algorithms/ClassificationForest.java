@@ -8,9 +8,7 @@ import com.hpccsystems.pmml2ecl.pmml.operations.FileNames;
 
 import java.util.*;
 
-public class ClassificationForest implements Algorithm{
-
-
+public class ClassificationForest implements Algorithm {
 
     private PMMLElement rootECL;
 
@@ -48,7 +46,9 @@ public class ClassificationForest implements Algorithm{
             List<PMMLElement> wiElements =
                     ElementFinder.getAllWhereHasTagContent(elementsToWorkOn, "wi", Integer.toString(counter));
             List<PMMLElement> relevantElements = getAllWithSpecificIndexItem(wiElements, 0, "2");
-            finalModels.add(getTreeFromElements(wiElements));
+            System.out.print("1..");
+            finalModels.add(getTreeFromElements(relevantElements));
+            counter++;
         }
 
         return finalModels;
@@ -77,6 +77,18 @@ public class ClassificationForest implements Algorithm{
         treeModel.addChild(baseNode);
 
         //TODO: Add children to Base Node. RECURSIVELY?
+        //      Iterate over all "Items" and then create nodes for them.
+        //      Do it destructively to cut down on time? Eh do it regularly first
+        int counter = 1;
+        while (hasSpecificIndexItem(elementsToWorkOn, 1, Integer.toString(counter))) {
+            List<PMMLElement> listOfCounter =
+                    getAllWithSpecificIndexItem(elementsToWorkOn, 1, Integer.toString(counter));
+            PMMLElement node = CommonElements.emptyElement("Node");
+            node.attributes.put("id", getFirstWithIndexItem(listOfCounter, 2, "3").firstNodeWithTag("value").content);
+            System.out.print("2..");
+            System.out.println(node.toString());
+            counter++;
+        }
 
         return finalModel;
     }
@@ -85,10 +97,31 @@ public class ClassificationForest implements Algorithm{
         List<PMMLElement> finalElems = new ArrayList<>();
         for (PMMLElement elem : elements) {
             PMMLElement indices = elem.firstNodeWithTag("indexes");
-            if (indices.childNodes.size() > itemNum && indices.childNodes.get(itemNum).content.equals(value))
+            if (indices != null &&
+                    indices.childNodes.size() > itemNum && indices.childNodes.get(itemNum).content.equals(value))
                 finalElems.add(elem);
         }
         return finalElems;
+    }
+
+    private PMMLElement getFirstWithIndexItem(List<PMMLElement> elements, int itemNum, String value) {
+        for (PMMLElement elem : elements) {
+            PMMLElement indices = elem.firstNodeWithTag("indexes");
+            if (indices != null &&
+                    indices.childNodes.size() > itemNum && indices.childNodes.get(itemNum).content.equals(value))
+                return elem;
+        }
+        return null;
+    }
+
+    private boolean hasSpecificIndexItem(List<PMMLElement> elements, int itemNum, String value) {
+        for (PMMLElement elem : elements) {
+            PMMLElement indices = elem.firstNodeWithTag("indexes");
+            if (indices != null &&
+                    indices.childNodes.size() > itemNum && indices.childNodes.get(itemNum).content.equals(value))
+                return true;
+        }
+        return false;
     }
 
 }

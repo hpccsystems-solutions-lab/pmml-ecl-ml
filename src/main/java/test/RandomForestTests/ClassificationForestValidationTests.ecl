@@ -96,14 +96,3 @@ tn0 := F.Model2Nodes(mod);
 OUTPUT(tn0);
 tn := SORT(tn0, wi, treeId, level, nodeid, id, number, depend);
 //OUTPUT(tn, {wi, level, treeId, nodeId, parentId, isLeft, id, number, value, depend, support, isOrdinal},NAMED('Tree'));
-
-//OUTPUT(LR.LogitPredict(betas, testData));
-
-//matrix := DATASET([{1, 1, 1, 5},
-//    {1, 1, 2, 1},
-//    {1, 1, 3, 4},
-//    {1, 1, 4, 1},
-//    {1, 1, 5, 2},
-//    {1, 1, 6, 4},
-//    {1, 1, 7, 8}], Types.NumericField);
-//OUTPUT(linearRegression.Predict(matrix, model));
