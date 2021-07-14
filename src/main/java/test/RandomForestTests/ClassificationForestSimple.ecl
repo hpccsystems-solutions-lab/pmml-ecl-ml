@@ -88,6 +88,7 @@ F := LT.ClassificationForest(numTrees, numVarsPerTree);
 mod := F.GetModel(Xe, Ye);
 OUTPUT('ClassificationForest');
 OUTPUT(mod);
+//OUTPUT(LT.LearningForest().CompressModel(mod));
 
 // With this line it runs fine.
 //mod := F.GetModel(X, Y, nominals);

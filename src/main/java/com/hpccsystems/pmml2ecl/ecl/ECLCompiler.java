@@ -90,51 +90,34 @@ public class ECLCompiler {
 
         InputStream in = null;
         BufferedReader br = null;
+
         try {
             in = p.getErrorStream();
             br = new BufferedReader(new InputStreamReader(in));
-            String lineErr;
-            while (true) {
-                System.out.print(".");
-                if (br.ready()) {
-                    lineErr = br.readLine();
-                    if (lineErr != null) {
-                        errorText += lineErr + "\r\n";
-                        System.out.println(lineErr);
-                    } else {
-                        break;
-                    }
+            String lineErr = "";
+            while (br.ready() || in.available() > 0) {
+                lineErr = br.readLine();
+                Thread.sleep(200);
+                if (lineErr != null) {
+                    errorText += lineErr + "\r\n";
                 } else {
-                    System.out.print("x");
                     break;
                 }
             }
+            System.out.println(errorText);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Error reading compile errors:"
                     + e.getMessage());
-        } finally {
-            try {
-                if (br != null)
-                {
-                    br.close();
-                }
-                if (in != null)
-                {
-                    in.close();
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
         }
         writeResultToFile(errorText, "CompileErrors.txt");
         String result = "";
         try {
             in = p.getInputStream();
             br = new BufferedReader(new InputStreamReader(in));
-            String lineErr;
-            while ((lineErr = br.readLine()) != null) {
-                result += lineErr + "\r\n";
+            String line;
+            while ((line = br.readLine()) != null) {
+                result += line + "\r\n";
             }
         } catch (Exception e) {
             e.printStackTrace();

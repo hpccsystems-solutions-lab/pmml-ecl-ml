@@ -152,6 +152,10 @@ public class PMMLElement extends Node {
         return commentCheck.matcher(check).find();
     }
 
+    public void setSelfClosing(boolean selfClosing) {
+        this.selfClosing = selfClosing;
+    }
+
     /**
      * Function that finds the first PMMLElement given a specific attribute pair
      * @param key The key of the attribute to look for

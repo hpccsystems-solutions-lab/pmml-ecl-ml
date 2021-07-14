@@ -32,7 +32,7 @@ public class ClassificationForest implements Algorithm {
     }
 
     private List<PMMLElement> getStoredModels() {
-        PMMLElement model = rootECL.firstNodeWithKey("Dataset");
+        PMMLElement model = rootECL.firstNodeWithTag("Dataset");
 
         List<PMMLElement> elementsToWorkOn = new ArrayList<>();
         List<PMMLElement> finalModels = new ArrayList<>();
@@ -46,7 +46,6 @@ public class ClassificationForest implements Algorithm {
             List<PMMLElement> wiElements =
                     ElementFinder.getAllWhereHasTagContent(elementsToWorkOn, "wi", Integer.toString(counter));
             List<PMMLElement> relevantElements = getAllWithSpecificIndexItem(wiElements, 0, "2");
-            System.out.print("1..");
             finalModels.add(getTreeFromElements(relevantElements));
             counter++;
         }
@@ -80,15 +79,73 @@ public class ClassificationForest implements Algorithm {
         //      Iterate over all "Items" and then create nodes for them.
         //      Do it destructively to cut down on time? Eh do it regularly first
         int counter = 1;
+        HashMap<String, TreeNode> nodeMap = new HashMap<>();
+        HashSet<String> dependents = new HashSet<>();
+        HashSet<String> scores = new HashSet<>();
+        HashSet<String> segments = new HashSet<>();
         while (hasSpecificIndexItem(elementsToWorkOn, 1, Integer.toString(counter))) {
             List<PMMLElement> listOfCounter =
                     getAllWithSpecificIndexItem(elementsToWorkOn, 1, Integer.toString(counter));
-            PMMLElement node = CommonElements.emptyElement("Node");
-            node.attributes.put("id", getFirstWithIndexItem(listOfCounter, 2, "3").firstNodeWithTag("value").content);
-            System.out.print("2..");
-            System.out.println(node.toString());
+            String[] nodeContent = new String[11];
+            for (int i = 0; i < nodeContent.length; i++) {
+                Node pmmlNode = getFirstWithIndexItem(listOfCounter, 2, Integer.toString(i + 1)).firstNodeWithTag("value");
+                nodeContent[i] = pmmlNode != null ? pmmlNode.content : null;
+            }
+
+            nodeContent[2] = nodeContent[2].replaceAll("\\.0", "");
+            nodeContent[3] = nodeContent[3].replaceAll("\\.0", "");
+
+            System.out.println(Arrays.toString(nodeContent));
+
+            segments.add(nodeContent[0]);
+
+            if (nodeContent[6].equals("0.0")) {
+                System.out.println(Arrays.toString(nodeContent));
+                Map<String, String> attr = new HashMap<>();
+                attr.put("id", nodeContent[2]);
+                attr.put("score", nodeContent[8]);
+
+                PMMLElement node = new PMMLElement("Node", attr, new ArrayList<>(), false);
+                nodeMap.put(nodeContent[2], new TreeNode(nodeContent[3], nodeContent[0], node));
+            } else {
+                Map<String, String> attr = new HashMap<>();
+                attr.put("id", nodeContent[2]);
+
+                PMMLElement node = new PMMLElement("Node", attr, new ArrayList<>(), false);
+
+                Map<String, String> predicateAttr = new HashMap<>();
+                predicateAttr.put("field", nodeContent[8]);
+                predicateAttr.put("value", nodeContent[6]);
+                //1.0 is left, 0.0 is right
+                predicateAttr.put("operator", nodeContent[5].equals("1.0") ? "lessOrEqual" : "greaterThan");
+
+                PMMLElement predicate = new PMMLElement("SimplePredicate", predicateAttr, new ArrayList<>(), true);
+                node.addChild(predicate);
+                nodeMap.put(nodeContent[2], new TreeNode(nodeContent[3], nodeContent[0], node));
+            }
+
+
             counter++;
         }
+
+        HashMap<String, PMMLElement> segmentMap = new HashMap<>();
+
+        for (String nodeId : nodeMap.keySet()) {
+            TreeNode currNode = nodeMap.get(nodeId);
+            TreeNode parentNode = nodeMap.get(currNode.parentId);
+            if (currNode.treeId.equals(parentNode.treeId) &&
+                    !currNode.node.getValue("id").equals(parentNode.node.getValue("id"))) {
+                parentNode.node.addChild(currNode.node);
+            }
+        }
+        for (String nodeId : nodeMap.keySet()) {
+            TreeNode currNode = nodeMap.get(nodeId);
+            if (currNode.node.childNodes.size() == 0) {
+                currNode.node.setSelfClosing(true);
+            }
+        }
+
+        baseNode.addChild(nodeMap.get("1").node);
 
         return finalModel;
     }
@@ -122,6 +179,19 @@ public class ClassificationForest implements Algorithm {
                 return true;
         }
         return false;
+    }
+
+    private class TreeNode {
+
+        String parentId;
+        String treeId;
+        PMMLElement node;
+
+        TreeNode(String parentId, String treeId, PMMLElement node) {
+            this.parentId = parentId;
+            this.node = node;
+        }
+
     }
 
 }

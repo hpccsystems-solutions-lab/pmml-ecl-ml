@@ -1,6 +1,5 @@
 package test.RandomForestTests;
 
-
 import com.hpccsystems.pmml2ecl.ECLConverter;
 import com.hpccsystems.pmml2ecl.PMMLConverter;
 import org.junit.Test;

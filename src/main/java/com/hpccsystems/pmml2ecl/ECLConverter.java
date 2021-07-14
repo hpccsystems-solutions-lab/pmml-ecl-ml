@@ -43,4 +43,13 @@ public class ECLConverter {
         }
     }
 
+    public ECLConverter() throws Exception {
+        try {
+            new ECLParser(currDir + "/obj/CompileResult.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Could not parse result XML file.");
+        }
+    }
+
 }
