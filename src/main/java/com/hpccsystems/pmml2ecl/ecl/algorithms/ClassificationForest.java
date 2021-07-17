@@ -95,12 +95,13 @@ public class ClassificationForest implements Algorithm {
             nodeContent[2] = nodeContent[2].replaceAll("\\.0", "");
             nodeContent[3] = nodeContent[3].replaceAll("\\.0", "");
 
+            segments.add(nodeContent[0]);
             System.out.println(Arrays.toString(nodeContent));
 
-            segments.add(nodeContent[0]);
+            if (nodeContent[2].equals("1"))
+//                System.out.println(Arrays.toString(nodeContent) + "<---- Index node");
 
             if (nodeContent[6].equals("0.0")) {
-                System.out.println(Arrays.toString(nodeContent));
                 Map<String, String> attr = new HashMap<>();
                 attr.put("id", nodeContent[2]);
                 attr.put("score", nodeContent[8]);
@@ -189,6 +190,7 @@ public class ClassificationForest implements Algorithm {
 
         TreeNode(String parentId, String treeId, PMMLElement node) {
             this.parentId = parentId;
+            this.treeId = treeId;
             this.node = node;
         }
 

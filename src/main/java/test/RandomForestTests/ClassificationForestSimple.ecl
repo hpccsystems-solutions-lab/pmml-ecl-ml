@@ -8,7 +8,7 @@ errorProb := 0;
 wiCount := 1;
 numTrainingRecs := 1000;
 numTestRecs := 1000;
-numTrees := 1;
+numTrees := 2;
 numVarsPerTree := 0;
 
 // Return TRUE with probability p

@@ -95,14 +95,9 @@ public class ECLCompiler {
             in = p.getErrorStream();
             br = new BufferedReader(new InputStreamReader(in));
             String lineErr = "";
-            while (br.ready() || in.available() > 0) {
+            while (br.ready()) {
                 lineErr = br.readLine();
-                Thread.sleep(200);
-                if (lineErr != null) {
-                    errorText += lineErr + "\r\n";
-                } else {
-                    break;
-                }
+                errorText += lineErr + "\r\n";
             }
             System.out.println(errorText);
         } catch (Exception e) {
@@ -126,13 +121,9 @@ public class ECLCompiler {
         } finally {
             try {
                 if (br != null)
-                {
                     br.close();
-                }
                 if (in != null)
-                {
                     in.close();
-                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
