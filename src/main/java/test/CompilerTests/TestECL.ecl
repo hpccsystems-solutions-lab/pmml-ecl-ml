@@ -63,7 +63,7 @@ dsRec make_data(dsRec d, UNSIGNED c) := TRANSFORM
   SELF.Y := IF(y, 4, 0);
 END;
 ds := NORMALIZE(dummy, numTrainingRecs, make_data(LEFT, COUNTER));
-//OUTPUT(ds, NAMED('TrainingData'));
+OUTPUT(ds, NAMED('TrainingData'));
 
 X1 := PROJECT(ds, TRANSFORM(NumericField, SELF.wi := 1, SELF.id := LEFT.id, SELF.number := 1,
                             SELF.value := LEFT.X1));

@@ -1,6 +1,6 @@
 {
   "eclBinary": "ecl",
-  "server": "play.hpccsystems.com",
+  "server": "localhost",
   "protocol": "http",
   "port": 8010,
   "user": "pmml2ecl",

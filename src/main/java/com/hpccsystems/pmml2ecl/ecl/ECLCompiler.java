@@ -80,6 +80,7 @@ public class ECLCompiler {
         Process p = pb.start();
         try
         {
+//            p.waitFor();
             Thread.sleep(1000);
         }
         catch (InterruptedException ex)
@@ -87,6 +88,8 @@ public class ECLCompiler {
             Thread.currentThread().interrupt();
         }
         String errorText = "";
+
+
 
         InputStream in = null;
         BufferedReader br = null;
@@ -99,7 +102,6 @@ public class ECLCompiler {
                 lineErr = br.readLine();
                 errorText += lineErr + "\r\n";
             }
-            System.out.println(errorText);
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Error reading compile errors:"

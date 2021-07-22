@@ -18,8 +18,8 @@ public class ClassificationForestTests {
 
     @Test
     public void simpleTest() throws Exception {
-        new ECLConverter();
-//        new ECLConverter(testDirectory + "/ClassificationForestSimple.ecl");
+//        new ECLConverter();
+        new ECLConverter(testDirectory + "/ClassificationForestValidationTests.ecl");
     }
 
 }
