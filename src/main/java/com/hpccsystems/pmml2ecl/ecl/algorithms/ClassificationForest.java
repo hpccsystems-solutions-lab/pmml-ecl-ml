@@ -61,10 +61,14 @@ public class ClassificationForest implements Algorithm {
 
         //modelName="randomForest_Model" functionName="classification" algorithmName="randomForest"
 
-        //TODO: Add children to Base Node. RECURSIVELY?
-        //      Iterate over all "Items" and then create nodes for them.
-        //      Do it destructively to cut down on time? Eh do it regularly first
+        PMMLElement miningModel = new PMMLElement("MiningModel",
+                "modelName=\"randomForest_Model\" functionName=\"classification\"", "", false);
 
+        PMMLElement segmentation = new PMMLElement("Segmentation",
+                "multipleModelMethod=\"majorityVote\"", "", false);
+
+        HashSet<String> classes = new HashSet<>();
+        HashSet<String> predictedValues = new HashSet<>();
         HashMap<String, Segment> segments = new HashMap<>();
         int idCounter = 1;
         String segmentId = "1";
@@ -86,6 +90,7 @@ public class ClassificationForest implements Algorithm {
                 segmentId = nodeContent[0];
                 idCounter = 1;
             }
+            classes.add(nodeContent[5]);
             Segment seg = segments.get(nodeContent[0]);
             if (!seg.levels.containsKey(nodeContent[1])) {
                 Level lev = new Level(nodeContent[1]);
@@ -97,6 +102,7 @@ public class ClassificationForest implements Algorithm {
                 Map<String, String> attr = new HashMap<>();
                 attr.put("id", Integer.toString(idCounter));
                 attr.put("score", nodeContent[8]);
+                predictedValues.add(nodeContent[8]);
 
                 PMMLElement pmmlNode = new PMMLElement("Node", attr, new ArrayList<>(), false);
                 TreeNode node = new TreeNode(nodeContent[2], nodeContent[3], pmmlNode);
@@ -122,6 +128,17 @@ public class ClassificationForest implements Algorithm {
         }
 
         int numSegments = segments.size();
+
+        PMMLElement miningSchema = CommonElements.emptyElement("MiningSchema");
+        for (String key : classes) {
+            Map<String, String> attr = new HashMap<>();
+            attr.put("name", key);
+            attr.put("usageType", "active");
+            miningSchema.addChild(new PMMLElement("MiningField", attr, null, true));
+        }
+        miningSchema.addChild(new PMMLElement("MiningField",
+                "name=\"class\" usageType=\"predicted\"", "", true));
+
         for (int s = 1; s <= numSegments; s++) {
             Segment segment = segments.get(Integer.toString(s));
 
@@ -201,10 +218,37 @@ public class ClassificationForest implements Algorithm {
             treeParams.put("algorithmName", "randomForest");
             PMMLElement treeModel = new PMMLElement("TreeModel", treeParams, new ArrayList<>(), false);
 
+            treeModel.addChild(miningSchema);
             treeModel.addChild(segment.levels.get("1").nodes.get("1").node);
+            segmentNode.addChild(CommonElements.emptySelfClosedElement("True"));
             segmentNode.addChild(treeModel);
-            finalModel.addChild(segmentNode);
+            segmentation.addChild(segmentNode);
         }
+
+        PMMLElement dataDict = new PMMLElement("DataDictionary",
+                "numberOfFields=\"" + (classes.size() + 1) + "\"", "", false);
+
+        PMMLElement classField = new PMMLElement("DataField",
+                "name=\"class\" optype=\"categorical\" dataType=\"string\"", "", false);
+        for (String key : predictedValues) {
+            PMMLElement value = new PMMLElement("Value",
+                    "value=\"" + key + "\"", "", true);
+            classField.addChild(value);
+        }
+
+        dataDict.addChild(classField);
+
+        for (String key : classes) {
+            PMMLElement dataField = new PMMLElement("DataField",
+                    "name=\"" + key + "\" optype=\"continuous\" dataType=\"double\"", "", true);
+            dataDict.addChild(dataField);
+        }
+
+
+        miningModel.addChild(miningSchema);
+        miningModel.addChild(segmentation);
+        finalModel.addChild(dataDict);
+        finalModel.addChild(miningModel);
 
         return finalModel;
     }

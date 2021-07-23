@@ -5,10 +5,10 @@ IMPORT LT.LT_Types AS Types;
 NumericField := CTypes.NumericField;
 DiscreteField := CTypes.DiscreteField;
 errorProb := 0;
-wiCount := 1;
+wiCount := 2;
 numTrainingRecs := 1000;
 numTestRecs := 1000;
-numTrees := 2;
+numTrees := 3;
 numVarsPerTree := 6;
 
 // Return TRUE with probability p
@@ -42,7 +42,7 @@ dsRec make_data0(dsRec d, UNSIGNED c) := TRANSFORM
                          SELF.X1 = 1 => x2B AND x3B, // AND
                          SELF.X1 = 2 => (x2B OR x3B) AND (NOT (x2B AND x3B)), // XOR
                          (NOT (x2B OR x3B)));  // NOR
-  SELF.Y := IF(y, 4, 0);
+  SELF.Y := IF(y, 10, 2);
 END;
 dsRec make_data(dsRec d, UNSIGNED c) := TRANSFORM
   SELF.id := c;
@@ -60,7 +60,7 @@ dsRec make_data(dsRec d, UNSIGNED c) := TRANSFORM
                          SELF.X1 >= -50 AND SELF.X1 < 0 => x2B AND x3B, // AND
                          SELF.X1 >= 0 AND SELF.X1 < 50 => (x2B OR x3B) AND (NOT (x2B AND x3B)), // XOR
                          (NOT (x2B OR x3B)));  // NOR
-  SELF.Y := IF(y, 4, 0);
+  SELF.Y := IF(y, 10, 2);
 END;
 ds := NORMALIZE(dummy, numTrainingRecs, make_data(LEFT, COUNTER));
 //OUTPUT(ds, NAMED('TrainingData'));
