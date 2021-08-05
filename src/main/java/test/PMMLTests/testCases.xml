@@ -1,0 +1,12 @@
+<Root>
+    <Node id="11">
+        <SimplePredicate field="2.0" value="0.5" operator="greaterThan"/>
+        <Node id="16">
+            <SimplePredicate field="1.0" value="-50.5" operator="lessOrEqual"/>
+            <Node score="2.0" id="23"/>
+            <Node score="10.0" id="22"/>
+        </Node>
+        <Node score="10.0" id="17"/>
+    </Node>
+    <Node id="4"/>
+</Root>

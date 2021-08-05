@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.hpccsystems.pmml2ecl.Node;
+import org.codehaus.plexus.personality.plexus.lifecycle.phase.Suspendable;
 
 public class PMMLElement extends Node {
 
@@ -115,8 +116,10 @@ public class PMMLElement extends Node {
             String tag = tagAndAttributes[0];
             if (tagAndAttributes[tagAndAttributes.length - 1].endsWith("/")) {
                 //If it is a self-closing tag..
+                tag = tag.replaceAll("/", "");
+                String attr = cont.substring(index + tag.length() + 1, endFirstTag - 1).replaceFirst(tag, "").trim();
                 PMMLElement innerElem = new PMMLElement(tag,
-                        cont.substring(index + 1, endFirstTag - 1).replaceFirst(tag, "").trim(),
+                        attr,
                         "", true);
                 this.childNodes.add(innerElem);
                 cont = cont.substring(endFirstTag + 1).trim();
@@ -128,18 +131,90 @@ public class PMMLElement extends Node {
                 this.childNodes.add(innerElem);
                 cont = cont.substring(endComment + 3);
             } else {
-                //if it actually has a closing tag.
+                //if it SHOULD have a closing tag.
                 String endingTag = "</" + tag + ">";
-                int endingTagIndex = cont.indexOf(endingTag, endFirstTag);
-                //This is where the recursion happens.
-                PMMLElement innerElem = new PMMLElement(tag,
-                        cont.substring(index + 1, endFirstTag).replaceFirst(tag, "").trim(),
-                        cont.substring(endFirstTag + 1, endingTagIndex).trim(), false);
-                this.childNodes.add(innerElem);
+                int endingTagIndex = findEnd(tag, cont, endFirstTag);
+
+                String attributes = cont.substring(index + 1, endFirstTag).replaceFirst(tag, "").trim();
+                String innerContent = cont.substring(endFirstTag + 1, endingTagIndex).trim();
                 cont = cont.substring(endingTagIndex + endingTag.length());
+
+                PMMLElement innerElem = new PMMLElement(tag, attributes, innerContent, false);
+                this.childNodes.add(innerElem);
             }
         }
         this.content = cont.trim();
+    }
+
+    private int findEnd(String tag, String content, int endFirstTag) {
+
+        String endingTag = "</" + tag + ">";
+        String nextTag = "<" + tag;
+
+        int startSearch = endFirstTag;
+        int lastSearch = startSearch;
+        int endingTagIndex = content.indexOf(endingTag, startSearch);
+        int nextOpen = content.indexOf(nextTag, startSearch);
+        int numOpen = 1;
+        while (numOpen > 0) {
+            //find index of next open tag or closed tag.
+            if (endingTagIndex < 0) {
+                startSearch = lastSearch;
+                break;
+            } else if (nextOpen < 0) {
+                startSearch = lastSearch;
+                break;
+            } else if (nextOpen < endingTagIndex) {
+                int startCheck = content.indexOf("<Node", startSearch + 1);
+                int getClose = -1;
+                int getSelfClose = -1;
+                boolean foundOpen = false;
+                do {
+                    if (startCheck < 0) {
+                        break;
+                    }
+                    getClose = content.indexOf('>', startCheck);
+                    getSelfClose = content.indexOf("/>", startCheck);
+                    if (getSelfClose == -1 && getClose != -1) {
+                        //found close but not self close
+                        startSearch = startCheck;
+                        numOpen++;
+                        break;
+                    } else if (getSelfClose < getClose) {
+                        //found self closing.
+                        startCheck = content.indexOf("<Node", startCheck + 1);
+                    } else if (getSelfClose > getClose) {
+                        foundOpen = true;
+                        startSearch = startCheck + ("<" + tag).length();
+                        numOpen++;
+                        break;
+                    }
+                } while (getClose != -1);
+
+                if (!foundOpen) {
+                    startSearch = endingTagIndex;
+                }
+
+            } else if (nextOpen > endingTagIndex) {
+                if (numOpen == 1) {
+                    numOpen--;
+                } else {
+                    lastSearch = startSearch;
+                    startSearch = endingTagIndex + endingTag.length();
+                    numOpen--;
+                }
+            }
+            int nextEndingIn = content.indexOf(endingTag, startSearch);
+            endingTagIndex = nextEndingIn > 0 ? nextEndingIn : endingTagIndex;
+            nextOpen = content.indexOf(nextTag, startSearch);
+        }
+        int nextEndingIn = content.indexOf(endingTag, startSearch);
+        endingTagIndex = nextEndingIn > 0 ? nextEndingIn : endingTagIndex;
+        if (endingTagIndex == -1) {
+            System.out.println(content);
+            return content.indexOf(endingTag, endFirstTag);
+        }
+        return endingTagIndex;
     }
 
     /**
@@ -154,6 +229,14 @@ public class PMMLElement extends Node {
 
     public void setSelfClosing(boolean selfClosing) {
         this.selfClosing = selfClosing;
+    }
+
+    public boolean hasChildren() {
+        return this.childNodes.size() > 0;
+    }
+
+    public String getTag() {
+        return nodeType;
     }
 
     /**
@@ -227,6 +310,18 @@ public class PMMLElement extends Node {
         }
         for (int i = 0; i < this.childNodes.size(); i++) {
             List<PMMLElement> search = ((PMMLElement) this.childNodes.get(i)).allNodesMatchingAttribute(key, value);
+            allNodes.addAll(search);
+        }
+        return allNodes;
+    }
+
+    public List<PMMLElement> allNodesWithTag(String tag) {
+        List<PMMLElement> allNodes = new ArrayList<>();
+        if (this.nodeType.equals(tag)) {
+            allNodes.add(this);
+        }
+        for (int i = 0; i < this.childNodes.size(); i++) {
+            List<PMMLElement> search = ((PMMLElement) this.childNodes.get(i)).allNodesWithTag(tag);
             allNodes.addAll(search);
         }
         return allNodes;

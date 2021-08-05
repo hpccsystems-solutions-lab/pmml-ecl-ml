@@ -18,13 +18,13 @@ public class LogisticRegression implements Algorithm {
 
     @Override
     public LinkedList<ECLElement> getEclFromModel() throws Exception {
+        //TODO: how does this handle errors?
         LinkedList<ECLElement> modelECL = new LinkedList<>();
         PMMLElement table = model.firstNodeWithTag("ParamMatrix");
 
         modelECL.add(new ECLElement("IMPORT LogisticRegression as LR;"));
         String betas = "betas := DATASET([\n    ";
 
-        //TODO: This is where we mine and parse the PMML.
         List<String> dataPoints;
         dataPoints = getFromSequentialTable(table);
 

@@ -1,0 +1,94 @@
+<TreeModel modelName="randomForest_Model" functionName="classification" algorithmName="randomForest">
+    <MiningSchema>
+        <MiningField name="0.0" usageType="active"/>
+        <MiningField name="1.0" usageType="active"/>
+        <MiningField name="2.0" usageType="active"/>
+        <MiningField name="3.0" usageType="active"/>
+        <MiningField name="class" usageType="predicted"/>
+    </MiningSchema>
+    <Node id="1">
+        <SimplePredicate field="1.0" value="-51.00006103517079" operator="lessOrEqual"/>
+        <Node id="2">
+            <SimplePredicate field="2.0" value="0.5" operator="greaterThan"/>
+            <Node id="4">
+                <SimplePredicate field="3.0" value="0.5" operator="greaterThan"/>
+                <Node score="2.0" id="8"/>
+                <Node score="10.0" id="9"/>
+            </Node>
+            <Node score="10.0" id="5"/>
+        </Node>
+        <Node id="3">
+            <SimplePredicate field="1.0" value="-1.537799881745627e-05" operator="lessOrEqual"/>
+            <Node id="6">
+                <SimplePredicate field="3.0" value="0.5" operator="greaterThan"/>
+                <Node id="10">
+                    <SimplePredicate field="1.0" value="-50.5" operator="lessOrEqual"/>
+                    <Node score="10.0" id="14"/>
+                    <Node score="2.0" id="15"/>
+                </Node>
+                <Node id="11">
+                    <SimplePredicate field="2.0" value="0.5" operator="greaterThan"/>
+                    <Node id="16">
+                        <SimplePredicate field="1.0" value="-50.5" operator="lessOrEqual"/>
+                        <Node score="2.0" id="23"/>
+                        <Node score="10.0" id="22"/>
+                    </Node>
+                    <Node score="10.0" id="17"/>
+                </Node>
+            </Node>
+            <Node id="7">
+                <SimplePredicate field="2.0" value="0.5" operator="greaterThan"/>
+                <Node id="12">
+                    <SimplePredicate field="1.0" value="52.9998738763095" operator="lessOrEqual"/>
+                    <Node id="18">
+                        <SimplePredicate field="3.0" value="0.5" operator="greaterThan"/>
+                        <Node id="24">
+                            <SimplePredicate field="1.0" value="50.45687782531604" operator="lessOrEqual"/>
+                            <Node id="30">
+                                <SimplePredicate field="1.0" value="48.91375565063208" operator="lessOrEqual"/>
+                                <Node score="2.0" id="38"/>
+                                <Node id="39">
+                                    <SimplePredicate field="1.0" value="49.5" operator="lessOrEqual"/>
+                                    <Node score="2.0" id="42"/>
+                                    <Node score="10.0" id="43"/>
+                                </Node>
+                            </Node>
+                            <Node score="10.0" id="31"/>
+                        </Node>
+                        <Node id="25">
+                            <SimplePredicate field="1.0" value="48.72603715234436" operator="lessOrEqual"/>
+                            <Node score="10.0" id="32"/>
+                            <Node id="33">
+                                <SimplePredicate field="1.0" value="49.5" operator="lessOrEqual"/>
+                                <Node score="10.0" id="40"/>
+                                <Node score="2.0" id="41"/>
+                            </Node>
+                        </Node>
+                    </Node>
+                    <Node id="19">
+                        <SimplePredicate field="3.0" value="0.5" operator="greaterThan"/>
+                        <Node score="10.0" id="26"/>
+                        <Node score="2.0" id="27"/>
+                    </Node>
+                </Node>
+                <Node id="13">
+                    <SimplePredicate field="1.0" value="52.91893719875452" operator="lessOrEqual"/>
+                    <Node id="20">
+                        <SimplePredicate field="1.0" value="28.93651515245438" operator="lessOrEqual"/>
+                        <Node id="28">
+                            <SimplePredicate field="3.0" value="0.5" operator="greaterThan"/>
+                            <Node score="10.0" id="34"/>
+                            <Node score="2.0" id="35"/>
+                        </Node>
+                        <Node id="29">
+                            <SimplePredicate field="3.0" value="0.5" operator="greaterThan"/>
+                            <Node score="10.0" id="36"/>
+                            <Node score="2.0" id="37"/>
+                        </Node>
+                    </Node>
+                    <Node score="2.0" id="21"/>
+                </Node>
+            </Node>
+        </Node>
+    </Node>
+</TreeModel>

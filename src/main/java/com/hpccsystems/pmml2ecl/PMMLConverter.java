@@ -5,6 +5,7 @@ import com.hpccsystems.pmml2ecl.ecl.ECLElement;
 import com.hpccsystems.pmml2ecl.ecl.ECLParser;
 import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 import com.hpccsystems.pmml2ecl.pmml.PMMLParser;
+import com.hpccsystems.pmml2ecl.pmml.algorithms.ClassificationForest;
 import com.hpccsystems.pmml2ecl.pmml.algorithms.LinearRegression;
 import com.hpccsystems.pmml2ecl.pmml.algorithms.LogisticRegression;
 
@@ -34,6 +35,9 @@ public class PMMLConverter {
             case "LogisticRegression":
                 ecl.addAll(new LogisticRegression(model).getEclFromModel());
                 break;
+            case "randomForest":
+                ecl.addAll(new ClassificationForest(root.firstNodeWithTag("Segmentation")).getEclFromModel());
+                break;
             default:
                 break;
         }
@@ -55,6 +59,9 @@ public class PMMLConverter {
                 break;
             case "LogisticRegression":
                 ecl.addAll(new LogisticRegression(model).getEclFromModel());
+                break;
+            case "randomForest":
+                ecl.addAll(new ClassificationForest(model).getEclFromModel());
                 break;
             default:
                 ecl.add(new ECLElement("OUTPUT('Unable to parse stored model.');"));
