@@ -1,0 +1,9 @@
+{
+  "eclBinary": "ecl",
+  "server": "localhost",
+  "protocol": "http",
+  "port": 8010,
+  "user": "pmml2ecl",
+  "password": "",
+  "jobName": "pmml2eclConversion"
+}

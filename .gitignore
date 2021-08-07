@@ -8,7 +8,6 @@ target/generated-sources/
 output/
 obj/
 out/
-META-INF/
 .classpath
 .factorypath
 .project
