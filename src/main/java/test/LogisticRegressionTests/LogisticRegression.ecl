@@ -60,23 +60,9 @@ observations := DATASET(
      {3, 8, 1, .3}, {3, 8, 2, .4}, {3, 8, 3, .4},
      {3, 9, 1, .4}, {3, 9, 2, .7}, {3, 9, 3, .3}], Types.NumericField);
 
-testData := DATASET([
-    {1, 1, 1, .2},
-    {1, 1, 2, .87}], Types.NumericField);
-
 
 regressionModel := LR.BinomialLogisticRegression(max_iter:=4).getModel(observations, classifications);
 betas := LR.ExtractBeta(regressionModel);
 
 OUTPUT('LogisticRegression');
 OUTPUT(regressionModel);
-//OUTPUT(LR.LogitPredict(betas, testData));
-
-//matrix := DATASET([{1, 1, 1, 5},
-//    {1, 1, 2, 1},
-//    {1, 1, 3, 4},
-//    {1, 1, 4, 1},
-//    {1, 1, 5, 2},
-//    {1, 1, 6, 4},
-//    {1, 1, 7, 8}], Types.NumericField);
-//OUTPUT(linearRegression.Predict(matrix, model));

@@ -75,22 +75,26 @@ public class ECLParser {
         if (this.rootNode.childNodes.size() >= 2) {
             PMMLElement type = this.rootNode.firstNodeWithAttribute("name", "Result 1");
             PMMLElement model = this.rootNode.firstNodeWithAttribute("name", "Result 2");
+            String output;
             if (type != null && model != null) {
                 switch (type.childNodes.get(0).childNodes.get(0).content) {
                     case "LinearRegression":
-                        new LinearRegression(model).writeStoredModel(outputPath);
+                        output = new LinearRegression(model).writeStoredModel(outputPath);
                         break;
                     case "LogisticRegression":
-                        new LogisticRegression(model).writeStoredModel(outputPath);
+                        output = new LogisticRegression(model).writeStoredModel(outputPath);
                         break;
                     case "ClassificationForest":
-                        new ClassificationForest(model).writeStoredModel(outputPath);
+                        output = new ClassificationForest(model).writeStoredModel(outputPath);
                         break;
                     default:
                         throw new Exception("Model type not well defined or outputted correctly.");
                 }
             } else {
                 throw new Exception("The model type or model was not defined properly or outputted in .ecl file.");
+            }
+            if (output != null) {
+                System.out.println("File(s) outputted at:\n" + output);
             }
         }
     }
@@ -112,6 +116,7 @@ public class ECLParser {
         for (ECLElement ecl : eclElements) {
             bw.write(ecl.toString() + "\n");
         }
+        System.out.println("ECL Outputted at:\n" + file.getAbsolutePath());
         bw.close();
     }
 
@@ -133,6 +138,7 @@ public class ECLParser {
         for (ECLElement ecl : eclElements) {
             bw.write(ecl.toString() + "\n");
         }
+        System.out.println("ECL Outputted at:\n" + file.getAbsolutePath());
         bw.close();
     }
 

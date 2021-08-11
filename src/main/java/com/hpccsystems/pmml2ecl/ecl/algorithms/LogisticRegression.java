@@ -21,16 +21,16 @@ public class LogisticRegression implements Algorithm {
     }
 
     @Override
-    public void writeStoredModel() throws Exception {
-        internalGetAndWrite(null);
+    public String writeStoredModel() throws Exception {
+        return internalGetAndWrite(null);
     }
 
     @Override
-    public void writeStoredModel(String absoluteFilePath) throws Exception {
-        internalGetAndWrite(absoluteFilePath);
+    public String writeStoredModel(String absoluteFilePath) throws Exception {
+        return internalGetAndWrite(absoluteFilePath);
     }
 
-    private void internalGetAndWrite(String filePath) throws Exception {
+    private String internalGetAndWrite(String filePath) throws Exception {
         PMMLElement model = rootECL.firstNodeWithTag("Dataset");
 
         List<PMMLElement> rows = new ArrayList<>();
@@ -49,6 +49,8 @@ public class LogisticRegression implements Algorithm {
                 }
             }
         }
+
+        List<String> filePaths = new ArrayList<>();
 
         int workid = 1;
         while (ElementFinder.hasElementWithTagContent(rows, "wi", Integer.toString(workid))) {
@@ -130,12 +132,13 @@ public class LogisticRegression implements Algorithm {
             generalRegressionModel.addChild(paramMatrix);
             modelRoot.addChild(generalRegressionModel);
             if (filePath != null) {
-                modelRoot.writeToFile(FileNames.insertNumberToFilePath(filePath, workid));
+                filePaths.add(modelRoot.writeToFile(FileNames.insertNumberToFilePath(filePath, workid)));
             } else {
-                modelRoot.writeToFile("LogisticRegression", workid);
+                filePaths.add(modelRoot.writeToFile("LogisticRegression", workid));
             }
             workid++;
         }
+        return String.join("\n", filePaths);
     }
 
     private List<PMMLElement> getMiningSchemaMatrix(List<PMMLElement> betas) {

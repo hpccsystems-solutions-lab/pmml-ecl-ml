@@ -18,18 +18,22 @@ public class ClassificationForest implements Algorithm {
     }
 
     @Override
-    public void writeStoredModel() throws Exception {
-        writeStoredModel(null);
+    public String writeStoredModel() throws Exception {
+        return writeStoredModel(null);
     }
 
     @Override
-    public void writeStoredModel(String absoluteFilePath) throws Exception {
+    public String writeStoredModel(String absoluteFilePath) throws Exception {
         List<PMMLElement> storedModels = getStoredModels();
-        for (int i = 1; i < storedModels.size() + 1; i++)
-            if (absoluteFilePath != null)
-                storedModels.get(i - 1).writeToFile(FileNames.insertNumberToFilePath(absoluteFilePath, i));
-            else
-                storedModels.get(i - 1).writeToFile("ClassificationForest", i);
+        List<String> filePaths = new ArrayList<>();
+        for (int i = 1; i < storedModels.size() + 1; i++) {
+            if (absoluteFilePath != null) {
+                filePaths.add(storedModels.get(i - 1).writeToFile(FileNames.insertNumberToFilePath(absoluteFilePath, i)));
+            } else {
+                filePaths.add(storedModels.get(i - 1).writeToFile("ClassificationForest", i));
+            }
+        }
+        return String.join("\n", filePaths);
     }
 
     private List<PMMLElement> getStoredModels() {

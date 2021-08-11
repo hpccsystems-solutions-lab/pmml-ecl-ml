@@ -20,35 +20,38 @@ public class LinearRegression implements Algorithm {
     }
 
     @Override
-    public void writeStoredModel() throws Exception {
+    public String writeStoredModel() throws Exception {
         List<PMMLElement> elements = new ArrayList<>();
+        List<String> filePaths = new ArrayList<>();
         for (Node n : rootModel.childNodes) {
             elements.add((PMMLElement) n);
         }
         int workid = 1;
         while (ElementFinder.hasElementWithTagContent(elements, "wi", Integer.toString(workid))) {
-            getFile(ElementFinder.getAllWhereHasTagContent(elements, "wi", Integer.toString(workid)))
-                    .writeToFile("LinearRegression", workid);
+            filePaths.add(getFile(ElementFinder.getAllWhereHasTagContent(elements, "wi", Integer.toString(workid)))
+                    .writeToFile("LinearRegression", workid));
             workid++;
         }
+        return String.join("\n", filePaths);
     }
 
     @Override
-    public void writeStoredModel(String absoluteFilePath) throws Exception {
+    public String writeStoredModel(String absoluteFilePath) throws Exception {
         if (absoluteFilePath == null) {
-            writeStoredModel();
-            return;
+            return writeStoredModel();
         }
         List<PMMLElement> elements = new ArrayList<>();
+        List<String> filePaths = new ArrayList<>();
         for (Node n : rootModel.childNodes) {
             elements.add((PMMLElement) n);
         }
         int workid = 1;
         while (ElementFinder.hasElementWithTagContent(elements, "wi", Integer.toString(workid))) {
-            getFile(ElementFinder.getAllWhereHasTagContent(elements, "wi", Integer.toString(workid)))
-                    .writeToFile(FileNames.insertNumberToFilePath(absoluteFilePath, workid));
+            filePaths.add(getFile(ElementFinder.getAllWhereHasTagContent(elements, "wi", Integer.toString(workid)))
+                    .writeToFile(FileNames.insertNumberToFilePath(absoluteFilePath, workid)));
             workid++;
         }
+        return String.join("\n", filePaths);
     }
 
     private PMMLElement getFile(List<PMMLElement> elementsToWorkOn) {

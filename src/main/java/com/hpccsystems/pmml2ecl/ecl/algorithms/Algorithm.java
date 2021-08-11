@@ -4,7 +4,7 @@ import com.hpccsystems.pmml2ecl.pmml.PMMLElement;
 
 public interface Algorithm {
 
-    void writeStoredModel() throws Exception;
-    void writeStoredModel(String absoluteFilePath) throws Exception;
+    String writeStoredModel() throws Exception;
+    String writeStoredModel(String absoluteFilePath) throws Exception;
 
 }

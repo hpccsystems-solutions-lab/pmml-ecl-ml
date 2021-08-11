@@ -13,7 +13,7 @@ public class Converter {
         if (acceptablePMMLEndings.matcher(args[0]).find()) {
             if (args.length == 1) {
                 new PMMLConverter(args[0]);
-            } else if (args.length == 2 && acceptableECLEndings.matcher(args[0]).find()) {
+            } else if (args.length == 2 && acceptableECLEndings.matcher(args[1]).find()) {
                 new PMMLConverter(args[0], args[1]);
             } else {
                 throw new Exception("Too many files were given or file extensions not accepted.");
@@ -21,7 +21,7 @@ public class Converter {
         } else if (acceptableECLEndings.matcher(args[0]).find()) {
             if (args.length == 1) {
                 new ECLConverter(args[0]);
-            } else if (args.length == 2 && acceptablePMMLEndings.matcher(args[0]).find()) {
+            } else if (args.length == 2 && acceptablePMMLEndings.matcher(args[1]).find()) {
                 new ECLConverter(args[0], args[1]);
             } else {
                 throw new Exception("Too many files were given or file extensions not accepted.");

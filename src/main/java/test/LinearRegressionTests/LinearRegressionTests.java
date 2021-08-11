@@ -79,7 +79,8 @@ public class LinearRegressionTests {
 
         new ECLConverter(testDirectory + "/MultipleLinearRegressionTest.ecl");
         for (int i = 1; i < listOfCoefficients.size() + 1; i++) {
-            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + i + ".xml", Integer.toString(i));
+            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + i + ".xml",
+                    outputDirectory + "/ECLOutput" + Integer.toString(i) + ".ecl");
         }
     }
 
@@ -97,7 +98,8 @@ public class LinearRegressionTests {
 
         new ECLConverter(testDirectory + "/MultipleWILinearRegressionTest.ecl");
         for (int i = 1; i < listOfCoefficients.size() + 1; i++) {
-            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + i + ".xml", Integer.toString(i));
+            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + i + ".xml",
+                    outputDirectory + "/ECLOutput" + Integer.toString(i) + ".ecl");
         }
     }
 
@@ -127,7 +129,8 @@ public class LinearRegressionTests {
 
         new ECLConverter(testDirectory + "/UndeterminedMultipleWILinearRegressionTest.ecl");
         for (int i = 0; i < numArrays; i++) {
-            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + (i + 1) + ".xml", Integer.toString(i + 1));
+            new PMMLConverter(outputDirectory + "/PMMLOutput-LinearRegression" + (i + 1) + ".xml",
+                    outputDirectory + "/ECLOutput" + Integer.toString(i + 1) + ".ecl");
         }
         //At this point, you must check it manually using the output in the terminal and the files.
     }

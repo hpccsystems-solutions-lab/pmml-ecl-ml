@@ -379,7 +379,7 @@ public class PMMLElement extends Node {
      * Writes the current PMMLElement to /output/PMMLOutput.xml
      * @throws Exception
      */
-    public void writeToFile(String identifier, int number) throws Exception {
+    public String writeToFile(String identifier, int number) throws Exception {
         File outputDir = new File(System.getProperty("user.dir") + "/output");
         outputDir.mkdirs();
         File file = new File(System.getProperty("user.dir") + "/output/PMMLOutput-" + identifier.trim() + number + ".xml");
@@ -390,13 +390,14 @@ public class PMMLElement extends Node {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(this.toString());
         bw.close();
+        return file.getAbsolutePath();
     }
 
     /**
      * Writes the current PMMLElement to /output/PMMLOutput.xml
      * @throws Exception
      */
-    public void writeToFile(String absoluteFilePath) throws Exception {
+    public String writeToFile(String absoluteFilePath) throws Exception {
         String direct = absoluteFilePath.substring(0, absoluteFilePath.lastIndexOf("/"));
         File outputDir = new File(direct);
         outputDir.mkdirs();
@@ -408,6 +409,7 @@ public class PMMLElement extends Node {
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(this.toString());
         bw.close();
+        return file.getAbsolutePath();
     }
 
     /**
